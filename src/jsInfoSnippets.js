@@ -1,4 +1,4 @@
-const snippets = {
+const jsInfoSnippets = {
   0: `const obj = {
     user: 'John'
 }`,
@@ -27,9 +27,9 @@ let user = new User("Jack");`,
     if (isOwn) {
      // do something
     } else {
-      // do something else
+     // do something else
     }
 }`,
 };
 
-export default snippets;
+export default jsInfoSnippets;
