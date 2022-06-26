@@ -12,8 +12,8 @@ const randomJsTips = [
         <p>
           Marked.js will output a string of HTML, you can use{" "}
           <code>dangerouslySetInnerHTML</code> (React's replacement for{" "}
-          <code>innerHtml</code>) to output HTML but I am sure there is a safer
-          way to do it.
+          <code>innerHtml</code>) to output HTML from that, but I am sure there
+          is a safer way to do it.
         </p>
       </>
     ),

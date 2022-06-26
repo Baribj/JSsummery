@@ -37,7 +37,7 @@ function App() {
           {jsInfoTips.map((tip, key) => {
             // OK to use key since the list won't be re-ordered at any point
             return (
-              <TipWrapper key={key} link={tip.seeMore[0]}>
+              <TipWrapper key={key} link={tip.seeMore[0]} tipNumber={key}>
                 {tip.content}
               </TipWrapper>
             );
@@ -49,7 +49,7 @@ function App() {
           {randomJsTips.map((tip, key) => {
             // OK to use key since the list won't be re-ordered at any point
             return (
-              <TipWrapper key={key} link={tip.seeMore[0]}>
+              <TipWrapper key={key} link={tip.seeMore[0]} tipNumber={key}>
                 {tip.content}
               </TipWrapper>
             );
