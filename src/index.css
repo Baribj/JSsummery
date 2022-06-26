@@ -1,13 +1,28 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
+
+:root {
+  --bg: #0d1117;
+  --bottomMargin: 1.5rem;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+p,
+li {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: var(--bottomMargin);
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: #c9d1d9;
+}
+
+.container {
+  max-width: 900px;
 }
