@@ -1,7 +1,7 @@
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
-const CodeSnippet = ({ code }) => {
+const CodeSnippet = ({ code, lang }) => {
   const style = {
     padding: "30px",
     margin: "0px 0px var(--bottomMargin) 0px",
@@ -11,7 +11,7 @@ const CodeSnippet = ({ code }) => {
   return (
     <div className="code-snippet">
       <SyntaxHighlighter
-        language="javascript"
+        language={lang ? { lang } : "javascript"}
         style={atomOneDark}
         customStyle={style}
       >

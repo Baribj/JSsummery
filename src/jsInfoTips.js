@@ -5,6 +5,16 @@ const tips = [
   {
     content: (
       <p>
+        JavaScript engines like read ("parse") the script, then they convert
+        ("compile") the script to the machine language hen the machine code
+        runs, pretty fast.
+      </p>
+    ),
+    seeMore: [""],
+  },
+  {
+    content: (
+      <p>
         The operators <code>typeof x</code> and <code>typeof(x)</code> are the
         same. They both return the data type of <code>x</code>.
       </p>
@@ -185,7 +195,7 @@ const tips = [
         <ul>
           <li>They are named with capital letter first.</li>
           <li>
-            hey should be executed only with <code>new</code> operator.
+            They should be executed only with <code>new</code> operator.
           </li>
         </ul>
         <CodeSnippet code={jsInfoSnippets[5]} />
