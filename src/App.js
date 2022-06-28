@@ -10,18 +10,7 @@ import tempTips from "./tempTips";
 
 function App() {
   //
-  let age = 18;
 
-  let message =
-    age < 3
-      ? "Hi, baby!"
-      : age < 18
-      ? "Hello!"
-      : age < 100
-      ? "Greetings!"
-      : "What an unusual age!";
-
-  console.log(message); // Greetings
   //
   return (
     <div className="App py-5 my-5">

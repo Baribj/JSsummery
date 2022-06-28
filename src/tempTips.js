@@ -286,8 +286,8 @@ console.log(typeof alert); // function >> functions are objects`}
                   performed with <code>String(value)</code>.
                 </p>
                 <p>
-                  String conversion is mostly obvious. A false becomes "false",
-                  null becomes "null", etc.
+                  String conversion is mostly obvious. A false becomes{" "}
+                  <code>"false"</code>, null becomes <code>"null"</code>, etc.
                 </p>
               </>
             ),
@@ -424,7 +424,7 @@ console.log(+a + +b); // 3`}
               <>
                 <p>
                   Just like other operators, the assignment operator{" "}
-                  <code>=</code> returns a value
+                  <code>=</code> returns a value.
                 </p>
                 <p>
                   The call <code>x = value</code> writes the value into x and
@@ -463,8 +463,8 @@ console.log((a = 2 * 2)); //4`}
             content: (
               <>
                 <p>
-                  Comparison operators return a boolean valuereturn a boolean
-                  value
+                  Comparison operators return a boolean value return a boolean
+                  value.
                 </p>
                 <p>
                   When comparing values of different types, JavaScript converts
@@ -489,16 +489,16 @@ console.log(a == b); // true!`}
                   are weird and non-intuitive. To avoid issues:
                 </p>
                 <p>
-                  - Treat any comparison with <code>undefined</code>/
+                  - Treat any comparison with <code>undefined</code> /{" "}
                   <code>null</code> except the strict equality <code>===</code>{" "}
                   with exceptional care.
                 </p>
                 <p>
                   - Don't use comparisons <code>{">="}</code> <code>{">"}</code>{" "}
                   <code>{"<"}</code> <code>{"<="}</code> with a variable which
-                  may be <code>null</code>/<code>undefined</code>, unless you're
-                  really sure of what you're doing. If a variable can have these
-                  values, check for them separately.
+                  may be <code>null</code> / <code>undefined</code>, unless
+                  you're really sure of what you're doing. If a variable can
+                  have these values, check for them separately.
                 </p>
               </>
             ),
@@ -533,6 +533,98 @@ let message =
 
 console.log(message); // Greetings`}
                 />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Logical operators",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  OR "<code>||</code>" finds the first truthy value.
+                </p>
+                <CodeSnippet
+                  code={`const result = value1 || value2 || value3; // returns the first truthy value`}
+                />
+                <p>
+                  Short-circuit evaluation. This means an expression won't run
+                  if there is an a truthy value before it.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <p>
+                AND "<code>&&</code>"" returns the first falsy value or the last
+                value if none were found.
+              </p>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  NOT "<code>!</code>" converts the operand to boolean type:{" "}
+                  <code>true</code> / <code>false</code> and returns the
+                  inverse.
+                </p>
+                <p>
+                  A double NOT <code>!!</code> is sometimes used for converting
+                  a value to boolean type.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Nullish coalescing operator '??'",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  The nullish coalescing operator "<code>??</code>"" returns the
+                  first argument if it's not <code>null</code> /{" "}
+                  <code>undefined</code>. Otherwise, the second one.
+                </p>
+                <p>
+                  The common use case for <code>??</code> is to provide a
+                  default value.
+                </p>
+                <p>
+                  The difference between <code>||</code> and <code>??</code> is
+                  as follow:
+                </p>
+                <p>
+                  - <code>||</code> returns the first truthy value (doesn't
+                  distinguish between <code>false</code> , <code>0</code> , an
+                  empty string <code>""</code> and <code>null</code> /{" "}
+                  <code>undefined</code>).
+                </p>
+                <p>
+                  - <code>??</code> returns the first defined value.
+                </p>
+                <p>Consider the following:</p>
+                <CodeSnippet
+                  code={`let height = 0;
+
+console.log(height || 100); // 100
+console.log(height ?? 100); // 0`}
+                />
+                <p>
+                  It's forbidden to use <code>??</code> with <code>||</code> or{" "}
+                  <code>&&</code> without explicit parentheses.
+                </p>
               </>
             ),
             seeMore: [""],
