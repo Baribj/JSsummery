@@ -126,11 +126,6 @@ const tempTips = [
                   Usually, statements are written on separate lines to make the
                   code more readable:
                 </p>
-                <CodeSnippet
-                  code={`alert('Hello');
-
-alert('World');`}
-                />
               </>
             ),
             seeMore: [""],
@@ -145,7 +140,7 @@ alert('World');`}
               <p>
                 The directive <code>use-strict</code> used to be included at the
                 top of scripts to enable modern features after ECMAScript 5
-                release. Its no longer needed after ECMAScript 5.
+                release. Its no longer needed after ECMAScript 6.
               </p>
             ),
             seeMore: [""],
@@ -299,8 +294,8 @@ console.log(typeof alert); // function >> functions are objects`}
             content: (
               <>
                 <p>
-                  Numeric Conversion in math operations. Can be performed with{" "}
-                  <code> Number(value)</code>.
+                  Numeric conversion occurs in math operations. Can be performed
+                  with <code> Number(value)</code>.
                 </p>
                 <p>
                   Numeric conversion happens in mathematical functions and
@@ -472,8 +467,9 @@ console.log((a = 2 * 2)); //4`}
                 </p>
                 <p>
                   A funny consequence: its possible to have two values that are
-                  equal <code>a == b</code> and ath the same time One of them is
-                  true as a boolean and the other one is false as a boolean.
+                  equal <code>a == b</code> and at the same time one of them is{" "}
+                  <code>true</code> as a boolean and the other one is{" "}
+                  <code>false</code> as a boolean.
                 </p>
                 <CodeSnippet
                   code={`let a = 0;
@@ -925,6 +921,204 @@ console.log(func2()); // runs the function (which will log "hi") and return unde
               <p>Just a general revision, nothing new in this chapter.</p>
             ),
             seeMore: [""],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    sectionTitle: "Code quality",
+    chapters: [
+      {
+        chapterTitle: "Debugging in the browser",
+        tips: [
+          {
+            content: (
+              <>
+                <p>Right click on breakpoint to add a condition.</p>
+                <p>
+                  Add <code>debugger;</code> anywhere in the code to make a
+                  pause execution. It only works when dev tools is open, other
+                  ways the browser ignores it.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Coding Style",
+        tips: [
+          {
+            content: (
+              <>
+                <p>Code first then functions.</p>
+                <p>
+                  Its better to handle special cases early on{" "}
+                  <code>if(something) {"{... return}"}</code> instead of big{" "}
+                  <code>if ... else</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Comments",
+        tips: [
+          {
+            content: <p>Nothing interesting in this chapter!.</p>,
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Ninja code",
+        tips: [
+          {
+            content: <p>Witty and fun chapter, nothing to document tho.</p>,
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Automated testing with Mocha",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Behavior Driven Development (BDD) is three things in one:
+                  tests AND documentation AND examples. Hence, the specs can be
+                  used:
+                </p>
+                <p>As Tests - they guarantee that the code works correctly.</p>
+                <p>
+                  As Docs - the titles of describe and it tell what the function
+                  does.
+                </p>
+                <p>
+                  As Examples - the tests are actually working examples showing
+                  how a function can be used.
+                </p>
+                <CodeSnippet
+                  code={`describe("pow", function() { // specification 
+
+  it("raises to n-th power", function() { // worker
+    assert.equal(pow(2, 3), 8);
+  });
+
+});`}
+                />
+                <p>
+                  In BDD, the flow of development is as follow: We write the
+                  spec, implement it, make sure tests pass, then write more
+                  tests, make sure they work etc. At the end we have both a
+                  working implementation and tests for it.
+                </p>
+                <p>
+                  <a href="https://mochajs.org/">Mocha</a> - the core framework:
+                  it provides common testing functions including{" "}
+                  <code>describe</code> and <code>it</code> and the main
+                  function that runs tests.
+                </p>
+                <p>
+                  <a href="https://www.chaijs.com/">Chai</a> - the library with
+                  many assertions. It allows to use a lot of different
+                  assertions, for now we need only
+                </p>
+                <p>
+                  For the future, let's note that there are more high-level
+                  test-runners, like karma and others, that make it easy to auto
+                  run many different tests.
+                </p>
+                <p>Consider the difference between the following:</p>
+                <CodeSnippet
+                  code={`// single test
+describe("pow", function() {
+
+  it("raises to n-th power", function() {
+    assert.equal(pow(2, 3), 8);
+    assert.equal(pow(3, 4), 81);
+  });
+
+});`}
+                />
+                <p>and</p>
+                <CodeSnippet
+                  code={` // two tests
+describe("pow", function() {
+
+  it("2 raised to power 3 is 8", function() {
+    assert.equal(pow(2, 3), 8);
+  });
+
+  it("3 raised to power 4 is 81", function() {
+    assert.equal(pow(3, 4), 81);
+  });
+
+});`}
+                />
+                <p>
+                  The principal difference between the two is that when{" "}
+                  <code>assert</code> triggers an error, the <code>it</code>{" "}
+                  block immediately terminates. So, in the first variant if the
+                  first assert fails, then we'll never see the result of the
+                  second assert.
+                </p>
+                <p>
+                  Making tests separate is useful to get more information about
+                  what's going on, so the second variant is better.
+                </p>
+                <p>Remember: One test checks one thing.</p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Polyfills and transpilers",
+        tips: [
+          {
+            content: (
+              <>
+                {" "}
+                <p>
+                  A transpiler is a special piece of software that translates
+                  source code to another source code (syntax changes).
+                </p>
+                <p>
+                  <a href="https://babeljs.io/">Babel</a> is one of the most
+                  prominent transpilers out there.
+                </p>
+                <p>
+                  A polyfill is a script that updates/adds new functions. It
+                  "fills in" the gap and adds missing implementations (new
+                  functions).
+                </p>
+                <p>Two interesting polyfill libraries are:</p>
+                <ul>
+                  <li>
+                    <a href="https://github.com/zloirock/core-js">core js</a>{" "}
+                    that supports a lot, allows to include only needed features.
+                  </li>
+                  <li>
+                    <a href="https://polyfill.io/v3/">polyfill.io</a> service
+                    that provides a script with polyfills, depending on the
+                    features and user's browser.
+                  </li>
+                </ul>
+                <p>
+                  Don't be afraid of using bleeding-edge features, Just remember
+                  to use a transpiler (if using modern syntax or operators) and
+                  polyfills (to add functions that may be missing).
+                </p>
+              </>
+            ),
+            seeMore: ["https://javascript.info/polyfills"],
           },
         ],
       },
