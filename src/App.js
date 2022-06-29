@@ -17,10 +17,7 @@ function App() {
       <div className="container">
         <Heading type="h1" text={"JavaScript quick summary | by Ritwal"} />
         <div className="wrapper mb-5">
-          <p>
-            Quick tips that cover a wide range of JavaScript concepts. Those
-            tips aren't ordered in any particular way.
-          </p>
+          <p>Quick tips that cover a wide range of JavaScript concepts.</p>
           <p>
             Please note that this as a personal project that isn't meant for
             everyone. this is definitely not the right place to learn

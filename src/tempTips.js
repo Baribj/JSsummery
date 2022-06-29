@@ -119,8 +119,8 @@ const tempTips = [
             content: (
               <>
                 <p>
-                  Statements are syntax constructs and commands that perform
-                  actions.
+                  An expression is a block of code that evaluates to a value. A
+                  statement is any block of code that is performing some action.
                 </p>
                 <p>
                   Usually, statements are written on separate lines to make the
@@ -626,6 +626,303 @@ console.log(height ?? 100); // 0`}
                   <code>&&</code> without explicit parentheses.
                 </p>
               </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Loops: while and for",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Any expression or variable can be a loop condition in the{" "}
+                  <code>while</code> loop, not just comparisons: the condition
+                  is evaluated and converted to a boolean by <code>while</code>.
+                </p>
+                <p>
+                  For instance, a shorter way to write{" "}
+                  <code>while (i != 0)</code> is <code>while(i)</code>.
+                </p>
+                <p>
+                  The <code>while</code> loop syntax:
+                </p>
+                <CodeSnippet
+                  code={`while (condition) {
+  // code
+  // so-called "loop body"
+}`}
+                />
+                <p>
+                  The <code>while</code> loop is the same as{" "}
+                  <code>do..while</code> loop.
+                </p>
+                <p>
+                  This <code>do..while</code> syntax should only be used when
+                  you want the body of the loop to execute at least once.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The <code>for</code> loop syntax:
+                </p>
+                <CodeSnippet
+                  code={`for (begin; condition; step) {
+  // ... loop body ...
+}`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Use <code>break</code> to break out of loop and{" "}
+                  <code>continue</code> to break out of current iteration.
+                </p>
+                <p>
+                  The directives <code>break</code> / <code>continue</code>{" "}
+                  don't work on the right side of the ternary operator{" "}
+                  <code>?</code>. So, this doesn't work:
+                </p>
+                <CodeSnippet
+                  code={`(i > 5) ? console.log(i) : continue; // continue isn't allowed here`}
+                />
+                <p>If you need to break out of a nested loops, use labels.</p>
+                <CodeSnippet
+                  code={`labelName: for (...) {
+    //
+    break labelName;
+    //
+}
+`}
+                />
+              </>
+            ),
+            seeMore: [
+              "https://javascript.info/while-for#labels-for-break-continue",
+            ],
+          },
+        ],
+      },
+      {
+        chapterTitle: "The 'switch' statement",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  The <code>switch</code> statement checks for strict equality.
+                </p>
+                <p>
+                  You need <code>break</code> after each case, if not, all cases
+                  after match succeed will run
+                </p>
+                <p>The syntax is as follow:</p>
+                <CodeSnippet
+                  code={`switch (x) {
+  case 1:
+    alert("Too small");
+    break;
+  case 2:
+    alert("Too small");
+    break;
+  default:
+    alert("I don't know such values");
+}`}
+                />
+              </>
+            ),
+            seeMore: [``],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Functions",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Function parameters are the names listed in the function's
+                  definition. Function arguments are the real values passed to
+                  the function.
+                </p>
+                <p>
+                  If a same-named variable is declared inside the function then
+                  it shadows the outer one.
+                </p>
+                <p>
+                  Variables declared outside of any function are called global.
+                  However, they only become property of the <code>window</code>{" "}
+                  object if declared with <code>var</code> or explicitly
+                  assigned with <code>window.variable = "";</code>, but not if
+                  they are declared with <code>const</code> or <code>let</code>.
+                </p>
+                <p>
+                  Arguments of function are copied to local variable and
+                  changing them inside the function won't change the outer
+                  variables. This also applies to objects.
+                </p>
+                <p>
+                  Use the following syntax to assign default value to
+                  parameters:
+                </p>
+                <CodeSnippet
+                  code={`function func(a, b = "default value") { // 
+  //
+}`}
+                />
+                <p>
+                  default values can be anything, even functions, and they are
+                  only be evaluated if the parameter wasn't passed. Consider the
+                  following:
+                </p>
+                <CodeSnippet
+                  code={`function showMessage(a, b = anotherFunction()) {
+  // anotherFunction() will only be called if the parameter is missing.
+}`}
+                />
+                <p>
+                  Inside the function, do <code>if (a === undefined)</code> to
+                  check if parameter was passed.
+                </p>
+                <p>
+                  Using <code>return;</code> without a value causes the function
+                  to exit immediately. An empty <code>return;</code> is also the
+                  same as <code>return undefined;</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Function expressions",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  A function is a value. Surely, a function is a special value,
+                  in the sense that we can call it like <code>sayHi()</code>.
+                </p>
+                <CodeSnippet
+                  code={`function sayHi() {
+  alert("Hello");
+}
+
+console.log(String(sayHi)); // shows the function code`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Callbacks are just functions that are passed as arguments to
+                  another functions as a arguments.
+                </p>
+                <blockquote className="blockquote">
+                  <p>
+                    The idea is that we pass a function and expect it to be
+                    “called back” later if necessary.
+                  </p>
+                  <div className="blockquote-footer">
+                    From {""}
+                    <cite title="Source Title">javascript.info</cite>
+                  </div>
+                </blockquote>
+                <p>
+                  Notice the use of "later" rather than "after the function
+                  finishes".
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>Function declaration vs Function expression:</p>
+                <ul>
+                  <li>
+                    Function declaration <code>function(){"{}"}</code> can be
+                    called before declaration (because JS engines first scan the
+                    code and create all functions within that scope) and can't
+                    be reassigned (with <code>let</code> for example).
+                  </li>
+
+                  <li>
+                    Function expression <code>let func = ()=&gt;{"{}"}</code>{" "}
+                    can't be called before assignment (because they are only
+                    created with execution reaches them) and can be reassigned.
+                  </li>
+                </ul>
+                <p>
+                  Function declarations are only visible within the code in
+                  which they reside. functions expressions don't have this
+                  limitation:
+                </p>
+                <CodeSnippet
+                  code={`let welcome;
+
+if (...) {
+  welcome = function() {
+    //
+  };
+};
+
+welcome();  `}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Arrow functions, the basics",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  In a single line arrow function, the one line must be an
+                  expression for the function to return it. Remember, an
+                  expression is code that evaluates to a value.
+                </p>
+                <CodeSnippet
+                  code={`const func1 = () => 1 + 1; 
+const func2 = () => console.log("hi");
+
+console.log(func1()); // runs the function and return 2
+console.log(func2()); // runs the function (which will log "hi") and return undefined.`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "JavaScript specials",
+        tips: [
+          {
+            content: (
+              <p>Just a general revision, nothing new in this chapter.</p>
             ),
             seeMore: [""],
           },

@@ -23,7 +23,8 @@ body {
   color: #c9d1d9;
 }
 
-p code {
+p code,
+li code {
   /* so not to target <code> inside <pre> because that belongs to syntax highlighter. */
   background-color: #1a1d2f;
   padding: 1px 10px;
