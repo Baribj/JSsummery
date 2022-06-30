@@ -6,6 +6,7 @@ const CodeSnippet = ({ code, lang }) => {
     padding: "30px",
     margin: "0px 0px var(--bottomMargin) 0px",
     backgroundColor: "#131627",
+    borderRadius: "5px",
   };
 
   return (

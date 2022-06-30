@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import Heading from "./components/Heading";
 
 import { TipWrapper } from "./components/TipWrapper";
@@ -10,6 +11,15 @@ import tempTips from "./tempTips";
 
 function App() {
   //
+  const obj = {};
+
+  const a = Symbol("something");
+
+  obj[a] = 123; // add symbol property
+
+  console.log(obj[a]); // read its value
+
+  console.log(a);
 
   //
   return (

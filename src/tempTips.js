@@ -1,4 +1,5 @@
 import CodeSnippet from "./components/CodeSnippet";
+import tips from "./jsInfoTips";
 /* import jsInfoSnippets from "./jsInfoSnippets"; */
 
 const tempTips = [
@@ -1048,7 +1049,7 @@ describe("pow", function() {
                 />
                 <p>and</p>
                 <CodeSnippet
-                  code={` // two tests
+                  code={`// two tests
 describe("pow", function() {
 
   it("2 raised to power 3 is 8", function() {
@@ -1112,13 +1113,573 @@ describe("pow", function() {
                   </li>
                 </ul>
                 <p>
-                  Don't be afraid of using bleeding-edge features, Just remember
+                  Don't be afraid of using bleeding-edge features, just remember
                   to use a transpiler (if using modern syntax or operators) and
                   polyfills (to add functions that may be missing).
                 </p>
               </>
             ),
             seeMore: ["https://javascript.info/polyfills"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    sectionTitle: "Objects: the basics",
+    chapters: [
+      {
+        chapterTitle: "Objects",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Objects are associative arrays. They can be created in two
+                  ways:
+                </p>
+                <CodeSnippet
+                  code={`let user = new Object(); // "object constructor" syntax
+let user = {};  // "object literal" syntax`}
+                />
+                <p>
+                  To delete a property: <code>delete obj.prop</code>.
+                </p>
+                <p>
+                  We can use multi word property names, but then they must be
+                  quoted. For example: <code>"likes birds": true</code>.
+                  However, square brackets are then needed to access multi word
+                  property names.
+                </p>
+                <p>Property value shorthand:</p>
+                <CodeSnippet
+                  code={`const name = "John";
+
+const obj = {
+    name,
+};
+
+console.log(obj); // Object { name: John }`}
+                />
+                <p>
+                  There are no limitations on property names, they can be any
+                  strings or symbols, and other types are automatically
+                  converted to strings. (there is minor gotcha with
+                  <code>__proto__</code>, it can't be set with non-object
+                  values).
+                </p>
+                <p>
+                  However, the dot requires the key to be a valid variable
+                  identifier. That implies: contains no spaces, doesn't start
+                  with a digit and doesn't include special characters (
+                  <code>$</code> and <code>_ </code> are allowed).
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  To check if an object's property exists, you can either use:
+                </p>
+                <CodeSnippet
+                  code={`if ("key" in obj) {
+    //
+}`}
+                />
+                <p>Or,</p>
+                <CodeSnippet
+                  code={`if (obj.noSuchProperty === undefined) {
+    //
+}`}
+                />
+                <p>
+                  The first one is preferred. Also, the first one, unlike the
+                  second, returns <code>true</code> if the property exists and
+                  is assigned to <code>undefined</code>.
+                </p>
+                <p>
+                  Please note that on the left side of <code>in</code> there
+                  must be a property name. That's usually a quoted string.
+                </p>
+                <p>
+                  If we omit quotes, that means a variable should contain the
+                  actual name to be tested.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The <code>for..in</code> loop is completely different from the
+                  <code>for</code> loop we studied before. Its syntax is as
+                  follow:
+                </p>
+                <CodeSnippet
+                  code={`for (key in object) {
+  console.log(key)
+}`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Objects are ordered in a special fashion: integer properties
+                  are sorted, others appear in creation order.
+                </p>
+                <p>
+                  "Integer property" here means a string that can be converted
+                  to-and-from an integer without a change.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Object references and copying",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Objects are stored and copied by reference (address in
+                  memory). So a variable assigned to an object stores not the
+                  object itself, but its 'address in memory'.
+                </p>
+                <p>
+                  Two objects are equal only if they are the same object. Two
+                  variables referencing two empty objects aren't equal.
+                </p>
+                <p>
+                  Objects comparisons are used very rarely, and usually as a
+                  result of a programming mistake, we will skip this part.
+                </p>
+                <p>
+                  The method <code>Object.assign</code> is used to clone
+                  objects, the syntax is:
+                </p>
+                <CodeSnippet
+                  code={`Object.assign(dest, [src1, src2, src3...]) // can be any number of sources`}
+                />
+                <p>
+                  If object has another object within it, don't forget to also
+                  copy that object (deep cloning). You will need to do it with a
+                  loop that checks in a property is an object and then replicate
+                  its structure as wel. Otherwise, use{" "}
+                  <code>_.cloneDeep(obj)</code> thats provided by{" "}
+                  <a href="https://lodash.com/">lodash</a>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Garbage collection",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Simply put, “reachable” values are those that are accessible
+                  or usable somehow:
+                </p>
+                <p>
+                  1- There's a base set of inherently reachable values for
+                  instance:
+                </p>
+                <ul>
+                  <li>
+                    The currently executing function, its local variables and
+                    parameters.
+                  </li>
+                  <li>
+                    Other functions on the current chain of nested calls, their
+                    local variables and parameters.
+                  </li>
+                  <li>Global variables.</li>
+                  <li>(there are some other, internal ones as well).</li>
+                </ul>
+                <p>These values are called "roots".</p>
+                <p>
+                  2- Any other value is considered reachable if it's reachable
+                  from a root by a reference or by a chain of references.
+                </p>
+                <p>
+                  For instance, if there's an object in a global variable, and
+                  that object has a property referencing another object, that
+                  object is considered reachable. And those that it references
+                  are also reachable.
+                </p>
+                <p>
+                  See the{" "}
+                  <a href="https://javascript.info/garbage-collection#internal-algorithms">
+                    Internal algorithms
+                  </a>{" "}
+                  for garbage collection in simple steps.
+                </p>
+                <p>
+                  the garbage collector tries to run only while the CPU is idle,
+                  to reduce the possible effect on the execution.
+                </p>
+                <p>
+                  Remember: Being referenced is not the same as being reachable
+                  (from a root). Two objects can be referencing each other but
+                  there is no reference to either of them (from a root or
+                  something referenced by a root .. etc), making them
+                  unreachable.
+                </p>
+              </>
+            ),
+            seeMore: ["https://javascript.info/garbage-collection"],
+          },
+        ],
+      },
+      {
+        chapterTitle: 'Object methods, "this"',
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  See <a href="https://javascript.info/object-methods">here</a>{" "}
+                  for OOP book recommendations.
+                </p>
+                <p>
+                  To access the object, a method can use the <code>this</code>{" "}
+                  keyword. Remember, <code>this</code> is used inside methods
+                  and constructors to reference the object.
+                </p>
+                <p>
+                  The value of <code>this</code> is the object "before dot", the
+                  one used to call the method.
+                </p>
+                <p>
+                  If there's <code>this</code> inside a function, it expects to
+                  be called in an object context. If not, <code>this</code> will
+                  be <code>undefined</code>.
+                </p>
+                <p>
+                  Arrow functions are special: they don't have their "own"{" "}
+                  <code>this</code>. If we reference <code>this</code> from such
+                  a function, it's taken from the outer "normal" function.
+                </p>
+                <p>
+                  That's a special feature of arrow functions, it's useful when
+                  we actually do not want to have a separate <code>this</code>,
+                  but rather to take it from the outer context
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  A constructor function is just a function that create an
+                  object. There are two conventions tho:
+                </p>
+                <ul>
+                  <li>They are named with capital letter first.</li>
+                  <li>
+                    They should be executed only with <code>new</code> operator.
+                  </li>
+                </ul>
+                <CodeSnippet
+                  code={`function User(name) {
+    this.name = name;
+    this.isAdmin = false;
+  }
+
+let user = new User("Jack");`}
+                />
+                <p>
+                  The main purpose of constructors is to implement reusable
+                  object creation code.
+                </p>
+                <p>
+                  When a function is executed with new, it does the following
+                  steps:
+                </p>
+                <p>
+                  1- A new empty object is created and assigned to{" "}
+                  <code>this</code>.
+                </p>
+                <p>
+                  2- The function body executes. Usually it modifies{" "}
+                  <code>this</code>, adds new properties to it.
+                </p>
+                <p>3- The value of this is returned.</p>
+                <p>
+                  If we have many lines of code all about creation of a single
+                  complex object, we can wrap them in an immediately called
+                  constructor function, like this:
+                </p>
+                <CodeSnippet
+                  code={`// create a function and immediately call it with new
+let user = new function() {
+  this.name = "John";
+  this.isAdmin = false;
+};`}
+                />
+                <p>
+                  Now, <code>user</code> is an object, not a function, why?
+                  because, as mentioned above, a constructor returns the value
+                  of
+                  <code>this</code>.
+                </p>
+                <p>In fact, the code above is the same as:</p>
+                <CodeSnippet
+                  code={`let user = new (function() {
+  this.name = "John";
+  this.isAdmin = false;
+})();`}
+                />
+                <p>
+                  The constructor above can't be called again, because it is not
+                  saved anywhere.
+                </p>
+                <p>
+                  We can check whether a contractor was called with{" "}
+                  <code>new</code> or without it, using a special{" "}
+                  <code>new.target</code> property. We can then add logic to
+                  allow constructors to be called without <code>new</code>, this
+                  is sometimes used in libraries. Tho its rare and better
+                  avoided.{" "}
+                  <a href="https://javascript.info/constructor-new#constructor-mode-test-new-target">
+                    See details
+                  </a>{" "}
+                  if intrusted.
+                </p>
+                <p>
+                  Usually constructors don't have a <code>return</code>{" "}
+                  statement. However, If you explicitly add a{" "}
+                  <code>return</code> statement to a constructor, then the
+                  following applies:
+                </p>
+                <p>
+                  Return with an object returns that object, in all other cases
+                  <code>this</code> is returned.
+                </p>
+                <p>
+                  we can omit parentheses after new, if it has no arguments:
+                </p>
+                <CodeSnippet
+                  code={`let user = new User; // <-- no parentheses
+// same as
+let user = new User();`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: 'Optional chaining "?."',
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  The optional chaining <code>?.</code> stops the evaluation if
+                  the value before <code>?.</code> is <code>undefined</code> or
+                  <code>null</code> and returns <code>undefined</code>.
+                </p>
+                <p>
+                  if we overuse <code>?.</code>, coding errors can be silenced
+                  where not appropriate, and become more difficult to debug
+                </p>
+                <p>
+                  The optional chaining works only for declared variables. So{" "}
+                  <code>user?.prop</code> will only work if the{" "}
+                  <code>user</code> is declared.
+                </p>
+                <p>
+                  Why use <code>?.</code> after object name then? because{" "}
+                  <code>user</code> can be declared but is not an object for
+                  example, or is <code>null</code> or <code>undefined</code>.
+                </p>
+                <p>
+                  The <code>?.</code> short-circuits. You should remember what
+                  short-circuiting is (mentioned above), if not, that basically
+                  means any function calls or operations on the right side won't
+                  run if the left part doesn't exist.
+                </p>
+                <p>
+                  The optional chaining <code>?.</code> is not an operator, but
+                  a special syntax construct, that also works with functions and
+                  square brackets.
+                </p>
+                <CodeSnippet
+                  code={`userAdmin.admin?.(); // for functions
+
+user?.[key] // for square brackets
+
+user?.["name"]?.["firstName"] // chained square brackets`}
+                />
+                <p>
+                  We can use <code>?.</code> for safe reading and deleting, but
+                  not writing
+                </p>
+                <CodeSnippet
+                  code={`user?.name = "John"; // Error, doesn't work
+// because it evaluates to: undefined = "John"`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Symbol type",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Symbols are guaranteed to be unique. Even if we create many
+                  symbols with exactly the same description, they are different
+                  values. The description is just a label that doesn't affect
+                  anything.
+                </p>
+                <CodeSnippet
+                  code={`// id is a symbol with the description "id"
+let id = Symbol("id");`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>Symbols don’t auto-convert to a string.</p>
+                <p>
+                  If we really want to show a symbol, we need to explicitly call
+                  the <code>symbol.toString()</code> method. Or get{" "}
+                  <code>symbol.description</code> property to show the
+                  description only.
+                </p>
+                <p>
+                  Symbols allow us to create 'hidden' properties of an object.
+                </p>
+                <p>
+                  When an object belongs to another codebase, it's unsafe to add
+                  fields to them, since we might affect pre-defined behavior in
+                  that other codebase. However, symbols cannot be accessed
+                  accidentally. The third-party code won't be aware of newly
+                  defined symbols, so it's safe to add symbols to the user
+                  objects.
+                </p>
+                <p>To create symbol properties, you can use either syntax:</p>
+                <CodeSnippet
+                  code={`let id = Symbol("id");
+user[id] = 1;
+
+
+// or in object literal
+let id = Symbol("id");
+
+let user = {
+  name: "John",
+  [id]: 123 // not "id": 123
+};`}
+                />
+                <p>
+                  Why we need square brackets? because we need the value from
+                  the variable <code>id</code> as the key, not the string{" "}
+                  <code>"id"</code>. Remember, symbols are object keys, not
+                  values.
+                </p>
+                <p>
+                  Symbols are skipped by <code>for…in</code> and{" "}
+                  <code>Object.keys()</code> but are copied with{" "}
+                  <code>Object.assign()</code>.
+                </p>
+                <p>
+                  The global symbol registry allows us to create symbols in it
+                  and access them later, and it guarantees that repeated
+                  accesses by the same name return exactly the same symbol.
+                </p>
+                <p>Symbols inside the registry are called global symbols.</p>
+                <p>
+                  In order to read (create if absent) a symbol from the registry
+                  (get symbol by name), use <code>Symbol.for(key)</code>. To get
+                  name by symbol, use <code>Symbol.keyFor(sym)</code>.
+                </p>
+                <CodeSnippet
+                  code={`// get symbol by name
+let sym = Symbol.for("name"); // create of doesn't exist
+let sym2 = Symbol.for("id"); // create if doesn't exist
+
+// get name by symbol
+console.log( Symbol.keyFor(sym) ); // name
+console.log( Symbol.keyFor(sym2) ); // id`}
+                />
+                <p>All symbols have the description property.</p>
+                <p>
+                  To recap, whats the point of symbolic properties? they allow
+                  us to safely set properties for objects that belong to other
+                  scripts (by creating symbols and using them as a property
+                  keys). They can't be accessed by mistake from their code, and
+                  from our own code, we can easily access them as follow:
+                </p>
+                <CodeSnippet
+                  code={`const obj = {};
+
+const a = Symbol("something");
+
+obj[a] = 123; // add symbol property
+
+console.log(obj[a]); // read its value
+`}
+                />
+                <p>
+                  Technically, symbols are not 100% hidden.{" "}
+                  <code>Object.getOwnPropertySymbols(obj)</code> allows us to
+                  retrieve all symbols, and <code>Reflect.ownKeys(obj)</code>{" "}
+                  returns all keys including symbolic ones. Those methods are
+                  very rarely used though.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Object to primitive conversion",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  We will skip this chapter for now, too many little details to
+                  memorize, may be we should get back to it later?
+                </p>
+              </>
+            ),
+            seeMore: [""],
           },
         ],
       },
