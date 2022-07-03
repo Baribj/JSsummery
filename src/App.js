@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import Heading from "./components/Heading";
 
 import { TipWrapper } from "./components/TipWrapper";
@@ -11,16 +10,10 @@ import tempTips from "./tempTips";
 
 function App() {
   //
-  const obj = {};
+  let arr = [1, 2, 3];
 
-  const a = Symbol("something");
-
-  obj[a] = 123; // add symbol property
-
-  console.log(obj[a]); // read its value
-
-  console.log(a);
-
+  console.log(String(arr)); // "1,2,3"
+  console.log(arr.toString());
   //
   return (
     <div className="App py-5 my-5">
