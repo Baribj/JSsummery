@@ -27,8 +27,8 @@ p code,
 li code {
   /* so not to target <code> inside <pre> because that belongs to syntax highlighter. */
   background-color: #1a1d2f;
-  padding: 3px 10px;
-  margin: 0px 5px;
+  padding: 3px 3px;
+  margin: 0px 2px;
   color: #c9d1d9;
   border-radius: 5px;
 }

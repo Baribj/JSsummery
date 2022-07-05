@@ -44,6 +44,29 @@ const randomJsTips = [
     ),
     seeMore: [""],
   },
+  {
+    content: (
+      <>
+        <p>
+          Need to go through{" "}
+          <a href="https://javascript.info/iterable">iterable</a> and{" "}
+          <a href="https://javascript.info/map-set">maps and sets</a> again.
+        </p>
+        <p>
+          How can <code>Object.fromEntries(arr)</code> and{" "}
+          <code>Object.fromEntries(map.entries())</code> be same when
+          <code>console.log(arr)</code> logs an array while
+          <code>console.log(map.entries())</code> logs an iterator?.
+        </p>
+        <p>
+          Possible explanation is that <code>Object.fromEntries</code> calls the
+          iterator by default. Gotta dig deeper and get a grip on what does that
+          even mean.
+        </p>
+      </>
+    ),
+    seeMore: [""],
+  },
 ];
 
 export default randomJsTips;

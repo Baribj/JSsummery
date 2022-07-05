@@ -6,14 +6,17 @@ import { TipWrapper } from "./components/TipWrapper";
 
 import randomJsTips from "./randomJsTips";
 
-import tempTips from "./tempTips";
+import tips from "./jsinfo/tips";
 
 function App() {
   //
-  let arr = [1, 2, 3];
+  /* let a = new WeakSet();
 
-  console.log(String(arr)); // "1,2,3"
-  console.log(arr.toString());
+  let john = { name: "john" };
+
+  a.add(john);
+
+  console.log(a.get(john)); */
   //
   return (
     <div className="App py-5 my-5">
@@ -48,7 +51,7 @@ function App() {
             possible.
           </p>
 
-          {tempTips.map((section, sectionKey) => {
+          {tips.map((section, sectionKey) => {
             return (
               <div className="tipsSection mb-5" key={sectionKey}>
                 <Heading
