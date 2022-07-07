@@ -2,7 +2,7 @@
 
 :root {
   --bg: #0d1117;
-  --lightGreen: #57ccc48a;
+  --secondaryColor: #039be5;
   --bottomMargin: 1.5rem;
 }
 
@@ -36,7 +36,7 @@ li code {
 
 blockquote {
   padding-left: 20px;
-  border-left: 4px solid #039be5;
+  border-left: 4px solid var(--secondaryColor);
 }
 
 .container {

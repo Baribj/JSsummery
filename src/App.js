@@ -87,7 +87,7 @@ function App() {
                       position: "absolute",
                       top: "3px",
                       right: "0px",
-                      color: "var(--lightGreen)",
+                      color: "var(--secondaryColor)",
                       cursor: "pointer",
                       transform: `${
                         hiddenSections.includes(sectionKey)
@@ -102,7 +102,7 @@ function App() {
                 </div>
 
                 {hiddenSections.includes(sectionKey) ? (
-                  <p style={{ color: "var(--lightGreen)" }}>[Hidden]</p>
+                  <p style={{ color: "var(--secondaryColor)" }}>[Hidden]</p>
                 ) : (
                   section.chapters.map((chapter, chapterKey) => {
                     return (
