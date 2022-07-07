@@ -592,8 +592,7 @@ console.log(String(arr)) // "1,2,3"  .. I think String() uses toString() interna
                     arr.splice(start[, deleteCount, elem1, ..., elemN])
                   </code>{" "}
                   modifies <code>arr</code> starting from the index start:
-                  removes
-                  <code>deleteCount</code> elements and then inserts{" "}
+                  removes <code>deleteCount</code> elements and then inserts{" "}
                   <code>elem1</code>, ...,
                   <code>elemN</code> at their place. Returns the array of
                   removed elements.
@@ -608,7 +607,7 @@ console.log(String(arr)) // "1,2,3"  .. I think String() uses toString() interna
                 <p>
                   - <code>arr.concat(arg1, arg2...)</code> concatenates arrays
                   and values. Returns new array. This method will copy objects
-                  as a whole, but if an array-like object has a special
+                  as a whole, but if an array-like object has a special{" "}
                   <code>Symbol.isConcatSpreadable</code> property, then it's
                   treated as an array by concat: its elements are added instead.
                 </p>
@@ -1507,7 +1506,7 @@ john = null; // overwrite the reference
                   <a href="https://javascript.info/weakmap-weakset#use-case-caching">
                     caching
                   </a>
-                  .
+                  (skipping the implementation details for now).
                 </p>
               </>
             ),
@@ -1599,6 +1598,846 @@ john = null; // overwrite the reference
               </>
             ),
             seeMore: "",
+          },
+        ],
+      },
+      {
+        chapterTitle: "Destructuring assignment",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Destructuring also works great with complex functions that
+                  have a lot of parameters, default values, and so on.
+                </p>
+                <p>
+                  Destructing looks great with <code>str.split</code> and other
+                  array-returning methods:
+                </p>
+                <CodeSnippet
+                  code={`let [firstName, surname] = "John Smith".split(' ');`}
+                />
+                <p>We can ignore elements using commas:</p>
+                <CodeSnippet
+                  code={`let [firstName, , title] = ["Julius", "Caesar", "Consul"];
+`}
+                />
+                <p>
+                  Actually, destructuring works with any iterable, not just
+                  arrays, because internally a destructuring assignment works by
+                  iterating over the right value. It's a kind of syntax sugar
+                  for calling <code>for..of</code> over the value to the right
+                  of <code>=</code> and assigning the values.
+                </p>
+                <p>We can use it with any key/value loops like:</p>
+                <CodeSnippet
+                  code={`for (let [key, value] of user) { // user here is a Map
+  console.log(\`\${key}:\${value}\`); // name:John, then age:30
+}`}
+                />
+                <p>Swap variables trick:</p>
+                <CodeSnippet
+                  code={`let guest = "Jane";
+let admin = "Pete";
+
+// Let's swap the values: make guest=Pete, admin=Jane
+[guest, admin] = [admin, guest];`}
+                />
+                <p>
+                  To get the rest of elements, we can use <code>...rest</code>{" "}
+                  (or any other name), which becomes an array holding the rest
+                  of elements.
+                </p>
+                <CodeSnippet
+                  code={`let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];`}
+                />
+                <p>
+                  If the array is shorter than the list of variables at the
+                  left, there'll be no errors. Absent values are considered
+                  undefined:
+                </p>
+                <CodeSnippet
+                  code={`let [firstName, surname] = [];
+
+alert(firstName); // undefined
+alert(surname); // undefined`}
+                />
+                <p>We can set default values:</p>
+                <CodeSnippet
+                  code={`let [name = "Guest", surname = "Anonymous"] = ["Julius"];`}
+                />
+                <p>
+                  Default values can be more complex expressions or even
+                  function calls. They are evaluated only if the value is not
+                  provided.
+                </p>
+              </>
+            ),
+            seeMore: [],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Use <code>:</code> to assign name different than object key
+                  when destructing objects.
+                </p>
+                <CodeSnippet
+                  code={`let {width: w, height: h, title} = options;`}
+                />
+                <p>Set default values with:</p>
+                <CodeSnippet
+                  code={`let {width = 100, height = 200, title} = options;`}
+                />
+                <p>
+                  Just like with arrays or function parameters, default values
+                  can be any expressions or even function calls. They will be
+                  evaluated if the value is not provided.
+                </p>
+                <p>Combine colons and equality:</p>
+                <CodeSnippet
+                  code={`let {width: w = 100, height: h = 200, title} = options;`}
+                />
+                <p>
+                  To get the rest of properties, we can use <code>...rest</code>{" "}
+                  (or any other name), which becomes an object holding the rest
+                  of properties.
+                </p>
+                <p>
+                  There is a gotcha if there is no <code>let</code> before
+                  destructuring:
+                </p>
+                <CodeSnippet
+                  code={`let title, width, height;
+
+// error in this line because JavaScript think its a code block
+{title, width, height} = {title: "Menu", width: 200, height: 100};
+
+// Either use:
+let {title, width, height} = {title: "Menu", width: 200, height: 100};
+
+// Or
+({title, width, height} = {title: "Menu", width: 200, height: 100};)`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>Working with more complex structures:</p>
+                <CodeSnippet
+                  code={`let options = {
+  size: {
+    width: 100,
+    height: 200
+  },
+  items: ["Cake", "Donut"],
+  extra: true
+};
+
+// destructuring assignment split in multiple lines for clarity
+let {
+  size: { // put size here
+    width,
+    height
+  },
+  items: [item1, item2], // assign items here
+  title = "Menu" // not present in the object (default value is used)
+} = options;`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  There are times when a function has many parameters, most of
+                  which are optional. Here’s a bad way to write such function:
+                </p>
+                <CodeSnippet
+                  code={`function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
+  // ...
+}`}
+                />
+                <p>
+                  In real-life, the problem is how to remember the order of
+                  arguments. Usually IDEs try to help us, especially if the code
+                  is well-documented, but still… Another problem is how to call
+                  a function when most parameters are ok by default.
+                </p>
+                <CodeSnippet
+                  code={`// undefined where default values are fine
+showMenu("My Menu", undefined, undefined, ["Item1", "Item2"])`}
+                />
+                <p>
+                  That's ugly. And becomes unreadable when we deal with more
+                  parameters. Destructuring comes to the rescue:
+                </p>
+                <CodeSnippet
+                  code={`// we pass object to function
+let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"]
+};
+
+// ...and it immediately expands it to variables
+function showMenu({title = "Untitled", width = 200, height = 100, items = []}) {
+  // title, items - taken from options,
+  // width, height - defaults used
+  console.log( \`\${title} \${width} \${height}\` ); // My Menu 200 100
+  console.log( items ); // Item1, Item2
+}
+
+showMenu(options);`}
+                />
+                <p>A more complex example:</p>
+                <CodeSnippet
+                  code={`let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"]
+};
+
+function showMenu({
+  title = "Untitled",
+  width: w = 100,  // width goes to w
+  height: h = 200, // height goes to h
+  items: [item1, item2] // items first element goes to item1, second to item2
+}) {
+  console.log( \`\${title} \${w} \${h}\` ); // My Menu 100 200
+  console.log( item1 ); // Item1
+  console.log( item2 ); // Item2
+}
+
+showMenu(options);`}
+                />
+                If we want to call showMenu() without any arguments:
+                <CodeSnippet
+                  code={`// Either use:
+showMenu({}); // ok, all values are default
+                  
+// Or set a {} to be the default value for the whole object of parameters:
+function showMenu({ title = "Menu", width = 100, height = 200 } = {}) {}`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Date and time",
+        tips: [
+          {
+            content: (
+              <>
+                <p>Creating dates:</p>
+                <p>
+                  - <code>new Date()</code> creates a <code>Date</code> object
+                  for the current date and time.
+                </p>
+                <p>
+                  - <code>new Date(timestamp)</code> get <code>Date</code>{" "}
+                  object from timestamp. Timestamp is the number of milliseconds
+                  passed after the Jan 1st of 1970 UTC+0.
+                </p>
+                <p>
+                  - <code>date.getTime()</code> get timestamp from{" "}
+                  <code>Date</code> object.
+                </p>
+                <p>
+                  - <code>new Date(datestring)</code> if there is a single
+                  argument, and its a string, its parsed automatically (The
+                  algorithm is the same as <code>Date.parse</code> mentioned
+                  below). Its adjusted according to the time zone.
+                </p>
+                <p>
+                  -{" "}
+                  <code>
+                    new Date(year, month, date, hours, minutes, seconds, ms)
+                  </code>{" "}
+                  <code>Year</code> is year (recommended to use 4 digits),{" "}
+                  <code>month</code> is a value between 0 and 1,{" "}
+                  <code>date</code> is actually the day of the month (defaults
+                  to 1), If the rest are absent, they default to 0. See syntax:
+                </p>
+                <CodeSnippet
+                  code={`new Date(2011, 0, 1, 0, 0, 0, 0); // 1 Jan 2011, 00:00:00`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>Accessing dates:</p>
+                <p>
+                  - <code>date.getFullYear()</code> get the year (4 digits).
+                </p>
+                <p>
+                  - <code>date.getMonth()</code> get the month, from 0 to 11.
+                </p>
+                <p>
+                  - <code>date.getDate()</code> Get the day of month, from 1 to
+                  31, the name of the method does look a little bit strange.
+                </p>
+                <p>
+                  - <code>date.getHours()</code>, <code>date.getMinutes()</code>
+                  , <code>date.getSeconds()</code>,{" "}
+                  <code>date.getMilliseconds()</code> get the corresponding time
+                  components.
+                </p>
+                <p>
+                  - <code>date.getDay()</code> get the day of th week. Between 0
+                  (Sunday) and 6 (Saturday). In some countries, thats not the
+                  case, but this can't be changed.
+                </p>
+                <p>
+                  All the methods above return the components relative to the
+                  local time zone.
+                </p>
+                <p>
+                  To get UTC time zone instead, use{" "}
+                  <code>date.getUTCFullYear()</code>,{" "}
+                  <code>getUTCMonth(),</code>, ... etc, just insert{" "}
+                  <code>UTC</code> right after <code>get</code>.
+                </p>
+                <p>
+                  - <code>date.getTimezoneOffset()</code> returns the difference
+                  between UTC and the local time zone, in minutes.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>Setting dates:</p>
+                <p>
+                  - <code>date.setFullYear(year, [month], [date])</code>.
+                </p>
+                <p>
+                  - <code>date.setMonth(month, [date])</code>.
+                </p>
+                <p>
+                  - <code>date.setDate(date)</code>.
+                </p>
+                <p>
+                  - <code>date.setHours(hour, [min], [sec], [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setMinutes(min, [sec], [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setSeconds(sec, [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setMilliseconds(ms)</code>.
+                </p>
+                <p>
+                  - <code>date.setTime(milliseconds)</code>.
+                </p>
+                <p>
+                  Every one of them except <code>setTime()</code> has a
+                  UTC-variant, for instance: <code>setUTCHours()</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                {" "}
+                <p>
+                  Out-of-range date components are distributed automatically:
+                </p>
+                <CodeSnippet
+                  code={`let date = new Date(2013, 0, 32); // 32 Jan 2013 ?!?
+console.log(date); // ...is 1st Feb 2013!`}
+                />
+                <p>
+                  This feature is often used to get the date after (or before,
+                  using negative numbers) the given period of time. For
+                  instance, let's get the date for "70 seconds after now":
+                </p>
+                <CodeSnippet
+                  code={`let date = new Date();
+date.setSeconds(date.getSeconds() + 70);
+
+console.log( date ); // shows the correct date`}
+                />
+                <p>
+                  When a <code>Date</code> object is converted to number, it
+                  becomes the timestamp same as <code>date.getTime()</code>:
+                </p>
+                <CodeSnippet
+                  code={`let date = new Date();
+console.log(+date); // the number of milliseconds, same as date.getTime()`}
+                />
+                <p>
+                  The important side effect: dates can be subtracted, the result
+                  is their difference in ms.
+                </p>
+                <p>
+                  - <code>Date.now()</code> returns the current timestamp. It is
+                  the same as <code>new Date().getTime()</code>, but doesn't
+                  create a <code>Date</code> object which makes it better
+                  performance wise.
+                </p>
+                <p>
+                  Not going to writes notes on the{" "}
+                  <a href="https://javascript.info/date#benchmarking">
+                    benchmarking
+                  </a>{" "}
+                  section, the only takeaways though are that{" "}
+                  <code>date1 - date2</code> is slower than{" "}
+                  <code>date1.getTime() - date2.getTime()</code> because there
+                  is no type conversion and that to add a heat-up run before
+                  benchmarking because JS engines won't optimize the first run
+                  of the code (unless it hot (i.e ran before)).
+                </p>
+                <p>
+                  - <code>Date.parse(str)</code>, read a date from a string. The
+                  string format should be: YYYY-MM-DDTHH:mm:ss.sssZ. "T" is used
+                  as the delimiter and optional "Z" denotes the time zone in the
+                  format +-hh:mm. A single letter Z would mean UTC+0. The method
+                  returns the timestamp.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  - <code>new Date()</code>.
+                </p>
+                <p>
+                  - <code>new Date(timestamp)</code>.
+                </p>
+                <p>
+                  - <code>date.getTime()</code>.
+                </p>
+                <p>
+                  - <code>new Date(datestring)</code>.
+                </p>
+                <p>
+                  -{" "}
+                  <code>
+                    new Date(year, month, date, hours, minutes, seconds, ms)
+                  </code>
+                  .
+                </p>
+                <p>
+                  - <code>date.getFullYear()</code>.
+                </p>
+                <p>
+                  - <code>date.getMonth()</code>.
+                </p>
+                <p>
+                  - <code>date.getDate()</code>.
+                </p>
+                <p>
+                  -{" "}
+                  <code>
+                    <code>date.getHours()</code>, <code>date.getMinutes()</code>
+                    , <code>date.getSeconds()</code>,{" "}
+                    <code>date.getMilliseconds()</code>
+                  </code>
+                  .
+                </p>
+                <p>
+                  - <code>date.getDay()</code>.
+                </p>
+                <p>
+                  - <code>date.getUTCFullYear()</code> ... etc.
+                </p>
+                <p>
+                  - <code>date.getTimezoneOffset()</code>.
+                </p>
+                <p>
+                  - <code>date.setFullYear(year, [month], [date])</code>.
+                </p>
+                <p>
+                  - <code>date.setMonth(month, [date])</code>.
+                </p>
+                <p>
+                  - <code>date.setDate(date)</code>.
+                </p>
+                <p>
+                  - <code>date.setHours(hour, [min], [sec], [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setMinutes(min, [sec], [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setSeconds(sec, [ms])</code>.
+                </p>
+                <p>
+                  - <code>date.setMilliseconds(ms)</code>.
+                </p>
+                <p>
+                  - <code>date.setTime(milliseconds)</code>. Note milliseconds
+                  is timestamp (milliseconds since 1970), while ms is
+                  milliseconds in the date object.
+                </p>
+                <p>
+                  - <code>setUTCFullYear()</code> ... etc.
+                </p>
+                <p>
+                  - <code>Date.now()</code>.
+                </p>
+                <p>
+                  - <code>Date.parse(str)</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "JSON methods, toJSON",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  What if we want to convert a complex object to a string to
+                  send it over a network for example? we can create a{" "}
+                  <code>toString()</code> method, that loops over the object
+                  properties and so on but what if the object has nested
+                  objects? we will have to implement their own{" "}
+                  <code>toString()</code> and loop over properties ... etc.
+                  Kinda hideous, isn't it?
+                </p>
+                <p>
+                  Luckily, there's no need to write the code to handle all this.
+                  The task has been solved already.
+                </p>
+                <p>JSON - JavaScript Object Notation.</p>
+                <p>
+                  - <code>JSON.stringify</code> converts objects into JSON.
+                  resulting <code>json</code> string is called a JSON-encoded or
+                  serialized or stringified or marshalled object.
+                </p>
+                <p>
+                  - <code>JSON.parse</code> converts JSON back into an object.
+                </p>
+                <p>
+                  Remember, JSON-encoded objects have single quotes around
+                  string (no double quotes or backticks) and have double quotes
+                  around property names.
+                </p>
+                <p>
+                  The method <code>JSON.stringify</code> supports objects,
+                  arrays, strings, numbers, booleans, and null.
+                </p>
+                <p>
+                  Remember, JSON is data only, so properties that are functions,
+                  symbolic, or store "undefined" are skipped.
+                </p>
+                <p>
+                  Nested objects are supported and converted automatically.
+                  However, there must be no circular references.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The full syntax of <code>JSON.stringify</code> is:
+                </p>
+                <CodeSnippet
+                  code={`let json = JSON.stringify(value[, replacer, space])`}
+                />
+                <p>
+                  - <code>value</code> value to encode.
+                </p>
+                <p>
+                  - <code>replacer</code> Array of properties to encode or a
+                  mapping function <code>function(key, value)</code>.
+                </p>
+                <p>
+                  - <code>space</code> Amount of space to use for formatting.
+                </p>
+                <p>
+                  Normally only the first argument is used, but if we need to
+                  fine-tune the replacement process, like to filter out circular
+                  references, we can use the second argument.
+                </p>
+                <p>Consider the following example:</p>
+                <CodeSnippet
+                  code={`let room = {
+  number: 23
+};
+
+let meetup = {
+  title: "Conference",
+  participants: [{name: "John"}, {name: "Alice"}],
+  place: room // meetup references room
+};
+
+room.occupiedBy = meetup; // room references meetup
+
+alert( JSON.stringify(meetup, ['title', 'participants', 'place', 'name', 'number']) );
+/*
+{
+  "title":"Conference",
+  "participants":[{"name":"John"},{"name":"Alice"}],
+  "place":{"number":23}
+}
+*/`}
+                />
+                <p>
+                  If a function is used as a <code>replacer</code>, it will be
+                  called for every (key, value) pair, and should return the
+                  "replaced" value.
+                </p>
+                <p>
+                  So we can redo the above example with a function that returns
+                  value as it is, but returns <code>undefined</code> for
+                  <code>occupiedBy</code> (to remove the circular reference).
+                </p>
+                <CodeSnippet
+                  code={`let room = {
+  number: 23
+};
+
+let meetup = {
+  title: "Conference",
+  participants: [{name: "John"}, {name: "Alice"}],
+  place: room // meetup references room
+};
+
+room.occupiedBy = meetup; // room references meetup
+
+alert( JSON.stringify(meetup, function replacer(key, value) {
+  console.log(\`\${key}: \${value}\`);
+  return (key == 'occupiedBy') ? undefined : value;
+}));
+
+/* key:value pairs that come to replacer:
+:             [object Object]
+title:        Conference
+participants: [object Object],[object Object]
+0:            [object Object]
+name:         John
+1:            [object Object]
+name:         Alice
+place:        [object Object]
+number:       23
+occupiedBy: [object Object]
+*/`}
+                />
+                <p>
+                  Please note that <code>replacer</code> function gets every
+                  key/value pair including nested objects and array items. It is
+                  applied recursively. The value of <code>this</code> inside
+                  <code>replacer</code> is the object that contains the current
+                  property.
+                </p>
+                <p>
+                  The first call is special. It is made using a special "wrapper
+                  object": {`{'': meetup}`}. In other words, the first (key,
+                  value) pair has an empty key, and the value is the target
+                  object as a whole. That's why the first line is ":[object
+                  Object]" in the example above.
+                </p>
+                <p>
+                  The idea is to provide as much power for <code>replacer</code>{" "}
+                  as possible: it has a chance to analyze and replace/skip even
+                  the whole object if necessary.
+                </p>
+                <p>
+                  The third argument <code>space</code> is just a number
+                  representing the number of spaces for indentation, or a string
+                  to use instead of spaces, its used solely for logging and
+                  nice-output purposes.
+                </p>
+                <p>
+                  The method <code>JSON.stringify</code> automatically calls{" "}
+                  <code>toJSON</code>, so we can add our own custom{" "}
+                  <code>toJSON</code>. Consider the following:
+                </p>
+                <CodeSnippet
+                  code={`let room = {
+  number: 23
+};
+
+let meetup = {
+  title: "Conference",
+  date: new Date(Date.UTC(2017, 0, 1)),
+  room
+};
+
+alert( JSON.stringify(meetup) );
+/*
+  {
+    "title":"Conference",
+    "date":"2017-01-01T00:00:00.000Z",  // (1)
+    "room": {"number":23}               // (2)
+  }
+*/`}
+                />
+                <p>
+                  Date becomes a string because all dates have a built-in{" "}
+                  <code>toJSON</code> method which returns such kind of string.
+                </p>
+                <p>
+                  Lets create our own <code>toJSON</code> method for{" "}
+                  <code>room</code>:
+                </p>
+                <CodeSnippet
+                  code={`let room = {
+  number: 23,
+  toJSON() {
+    return this.number;
+  }
+};
+
+let meetup = {
+  title: "Conference",
+  room
+};
+
+console.log( JSON.stringify(room) ); // 23
+
+console.log( JSON.stringify(meetup) );
+/*
+  {
+    "title":"Conference",
+    "room": 23
+  }
+*/`}
+                />
+                <p>
+                  Think about it for a second, if we didn't have the custom{" "}
+                  <code>toJSON</code> method, we would have gotten this instead:
+                </p>
+                <CodeSnippet
+                  code={`let room = {
+number: 23,
+/* toJSON() {
+    return this.number;
+}, */
+};
+
+let meetup = {
+  title: "Conference",
+  room,
+};
+
+console.log(JSON.stringify(room)); // {"number": 23}
+
+console.log(JSON.stringify(meetup));
+/*
+   {
+     "title":"Conference",
+     "room": {
+       "number": 23
+      }
+   } 
+*/`}
+                />
+                <p>To make it easy to understand, just remember:</p>
+                <CodeSnippet
+                  code={` let meetup = {
+  title: "Conference",
+  room,
+};
+
+// is the same as
+  let meetup = {
+  title: "Conference",
+    room: room
+};
+
+// the same as
+let meetup = {
+  title: "Conference",
+  room: { 
+    number: 23,  
+  },  
+}; 
+
+// so basically {number: 23} got replaced by whatever toJSON returned`}
+                />
+                <p>
+                  So, whatever <code>toJSON</code> method returns, that becomes
+                  the JSON-encoded string.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  As mentioned before, <code>JSON.parse</code> decode (also
+                  called "deserialize") a JSON-string (i.e. convert it back to
+                  an object or string or ...etc, also called). The syntax is as
+                  follow:
+                </p>
+                <CodeSnippet code={`let value = JSON.parse(str, [reviver]);`} />
+                <p>
+                  - <code>str</code> is the string to parse.
+                </p>
+                <p>
+                  - <code>reviver</code> optional function(key,value) that will
+                  be called for each (key, value) pair and can transform the
+                  value.
+                </p>
+                <p>Consider we got the following JSON from the server</p>
+                <CodeSnippet
+                  code={`let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+
+let meetup = JSON.parse(str);
+
+console.log( meetup.date.getDate() ); // Error!`}
+                />
+                <p>
+                  OOPS!, why did we get the error? its to be expected. How
+                  should JSON.parse know to transform a string to a{" "}
+                  <code>Date</code> object?
+                </p>
+                <p>
+                  Lets pass a <code>reviver</code> function to fix this:
+                </p>
+                <CodeSnippet
+                  code={`let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+
+let meetup = JSON.parse(str, function(key, value) {
+  if (key == 'date') return new Date(value);
+  return value;
+});
+
+console.log( meetup.date.getDate() ); // now works!`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <p>
+                A side note, the <code>replacer</code> and <code>reviver</code>{" "}
+                functions are also called transformer function.
+              </p>
+            ),
+            seeMore: [""],
           },
         ],
       },

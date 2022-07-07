@@ -2,7 +2,7 @@ import React from "react";
 import SeeMore from "./SeeMore";
 import TipNumber from "./TipNumber";
 
-export const TipWrapper = ({ link, tipNumber, children }) => {
+const TipWrapper = ({ link, tipNumber, children }) => {
   const style = {
     border: "1px solid #233048",
     borderRadius: "7px",
@@ -19,3 +19,5 @@ export const TipWrapper = ({ link, tipNumber, children }) => {
     </div>
   );
 };
+
+export default TipWrapper;

@@ -1,6 +1,8 @@
 import Heading from "./components/Heading";
 
-import { TipWrapper } from "./components/TipWrapper";
+import TipWrapper from "./components/TipWrapper";
+
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 /* import jsInfoTips from "./jsInfoTips"; */
 
@@ -8,15 +10,26 @@ import randomJsTips from "./randomJsTips";
 
 import tips from "./jsinfo/tips";
 
+import { useState } from "react";
+
 function App() {
+  const [hiddenSections, setHiddenSection] = useState([]);
+
+  function handleShowHide(n) {
+    if (hiddenSections.includes(n)) {
+      //
+      const shown = [...hiddenSections];
+      shown.splice(hiddenSections.indexOf(n), 1);
+      setHiddenSection(shown);
+      //
+    } else {
+      //
+      setHiddenSection([...hiddenSections, n]);
+      //
+    }
+  }
   //
-  /* let a = new WeakSet();
 
-  let john = { name: "john" };
-
-  a.add(john);
-
-  console.log(a.get(john)); */
   //
   return (
     <div className="App py-5 my-5">
@@ -54,46 +67,73 @@ function App() {
           {tips.map((section, sectionKey) => {
             return (
               <div className="tipsSection mb-5" key={sectionKey}>
-                <Heading
-                  type="h3"
-                  text={`${
-                    "Section " +
-                    String(sectionKey + 1) +
-                    " | " +
-                    section.sectionTitle +
-                    ":"
-                  }`}
-                />
+                <div className="position-relative pe-4">
+                  <Heading
+                    type="h3"
+                    text={`${
+                      "Section " +
+                      String(sectionKey + 1) +
+                      " | " +
+                      section.sectionTitle +
+                      ":"
+                    }`}
+                    sectionNumber={sectionKey}
+                    handleShowHide={handleShowHide}
+                  />
+                  <ArrowRightIcon
+                    fontSize="large"
+                    color="primary"
+                    style={{
+                      position: "absolute",
+                      top: "3px",
+                      right: "0px",
+                      color: "var(--lightGreen)",
+                      cursor: "pointer",
+                      transform: `${
+                        hiddenSections.includes(sectionKey)
+                          ? "rotate(0deg)"
+                          : "rotate(90deg)"
+                      }`,
+                    }}
+                    onClick={() => {
+                      handleShowHide(sectionKey);
+                    }}
+                  />
+                </div>
 
-                {section.chapters.map((chapter, chapterKey) => {
-                  return (
-                    <div className="tipsChapter mb-4" key={chapterKey}>
-                      <Heading
-                        type="h4"
-                        text={`${
-                          "Chapter " +
-                          String(sectionKey + 1) +
-                          "." +
-                          String(chapterKey + 1) +
-                          " | " +
-                          chapter.chapterTitle +
-                          ":"
-                        }`}
-                      />
-                      {chapter.tips.map((tip, key) => {
-                        return (
-                          <TipWrapper
-                            key={key}
-                            link={tip.seeMore[0]}
-                            tipNumber={key}
-                          >
-                            {tip.content}
-                          </TipWrapper>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                {hiddenSections.includes(sectionKey) ? (
+                  <p style={{ color: "var(--lightGreen)" }}>[Hidden]</p>
+                ) : (
+                  section.chapters.map((chapter, chapterKey) => {
+                    return (
+                      <div className="tipsChapter mb-4" key={chapterKey}>
+                        <Heading
+                          type="h4"
+                          text={`${
+                            "Chapter " +
+                            String(sectionKey + 1) +
+                            "." +
+                            String(chapterKey + 1) +
+                            " | " +
+                            chapter.chapterTitle +
+                            ":"
+                          }`}
+                        />
+                        {chapter.tips.map((tip, key) => {
+                          return (
+                            <TipWrapper
+                              key={key}
+                              link={tip.seeMore[0]}
+                              tipNumber={key}
+                            >
+                              {tip.content}
+                            </TipWrapper>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
               </div>
             );
           })}
@@ -109,7 +149,7 @@ function App() {
         </div>
 
         <div className="wrapper randomJsTips-wrapper mb-5 pb-5">
-          <Heading type="h2" text="Other random tips" />
+          <Heading type="h2" text="Other random tips and questions" />
 
           {randomJsTips.map((tip, key) => {
             // OK to use key since the list won't be re-ordered at any point

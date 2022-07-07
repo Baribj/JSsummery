@@ -55,7 +55,7 @@ const randomJsTips = [
         <p>
           How can <code>Object.fromEntries(arr)</code> and{" "}
           <code>Object.fromEntries(map.entries())</code> be same when
-          <code>console.log(arr)</code> logs an array while
+          <code>console.log(arr)</code> logs an array while{" "}
           <code>console.log(map.entries())</code> logs an iterator?.
         </p>
         <p>
