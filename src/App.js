@@ -28,6 +28,26 @@ function App() {
       //
     }
   }
+
+  function handleShowHideAll() {
+    if (hiddenSections.length !== 0) {
+      setHiddenSection([]);
+    } else {
+      setHiddenSection([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    }
+  }
+
+  //
+  //
+  //
+  //
+  let company = [1, 2, 3];
+
+  const hi = company.values();
+
+  console.log(hi);
+  //
+  //
   //
 
   //
@@ -35,6 +55,7 @@ function App() {
     <div className="App py-5 my-5">
       <div className="container">
         <Heading type="h1" text={"JavaScript quick summary | by Ritwal"} />
+
         <div className="wrapper mb-5">
           <p>Quick tips that cover a wide range of JavaScript concepts.</p>
           <p>
@@ -57,7 +78,26 @@ function App() {
         </div>
 
         <div className="wrapper jsInfoTips-wrapper mb-5 pb-5">
-          <Heading type="h2" text="Javascript.info book tips:" />
+          <div className="wrapper position-relative">
+            <Heading type="h2" text="Javascript.info book tips:" />
+            <ArrowRightIcon
+              fontSize="large"
+              color="primary"
+              style={{
+                position: "absolute",
+                top: "0px",
+                right: "0px",
+                color: "var(--secondaryColor)",
+                cursor: "pointer",
+                transform: `${
+                  hiddenSections.length ? "rotate(0deg)" : "rotate(90deg)"
+                }`,
+              }}
+              onClick={() => {
+                handleShowHideAll([]);
+              }}
+            />
+          </div>
           <p className="mb-4">
             Here is a quick summary of the book JavaScript.info, I included at
             least one tip from every chapter to keep the flow as logical as

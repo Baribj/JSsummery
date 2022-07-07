@@ -94,6 +94,12 @@ alert( pow(2, 3) ); // 8`}
                   context changing <code>i</code> and other variables in the
                   process.
                 </p>
+                <p>
+                  <strong>
+                    Skipping the rest of this chapter for now, must go back to
+                    it.
+                  </strong>
+                </p>
               </>
             ),
             seeMore: [

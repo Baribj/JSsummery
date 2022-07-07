@@ -1602,6 +1602,111 @@ john = null; // overwrite the reference
         ],
       },
       {
+        chapterTitle: "Object.keys, values, entries",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  The methods <code>map.keys()</code>,{" "}
+                  <code> map.values()</code>, and <code>map.entries()</code>,
+                  work for Maps, Sets, and Arrays. They are generic methods,
+                  there is a common agreement to use them for data structures.
+                  If we ever create a data structure of our own, we should
+                  implement them too.
+                </p>
+                <p>
+                  Plain objects also have similar methods, bu they are a bit
+                  different:
+                </p>
+                <p>
+                  - <code>Object.keys(obj)</code> returns an array of keys.
+                </p>
+                <p>
+                  - <code>Object.values(obj)</code> returns an array of values.
+                </p>
+                <p>
+                  - <code>Object.entries(obj)</code> returns an array of [key,
+                  value] pairs.
+                </p>
+                <p>Please note the differences:</p>
+                <ol>
+                  <li>
+                    <code>Object.keys(obj)</code>, and not{" "}
+                    <code>obj.keys()</code>. Why? for simplicity. This way, we
+                    can add our own <code>obj.keys()</code> and use it on the
+                    object along with <code>Object.keys(obj)</code>.
+                  </li>
+                  <li>
+                    <code>Object.keys(obj)</code> returns a "real" array, not
+                    just an iterable (mainly for historical reasons).
+                  </li>
+                </ol>
+                <p>See the following example on how loop an object:</p>
+                <CodeSnippet
+                  code={`let user = {
+  name: "John",
+  age: 30
+};
+
+// loop over values
+for (let value of Object.values(user)) {
+  console.log(value); // John, then 30
+}`}
+                />
+                <p>
+                  Just like <code>for..in</code> loop, these methods ignore
+                  symbolic properties. Usually that's convenient. But if we want
+                  symbolic keys too, then there's a separate method
+                  <code>Object.getOwnPropertySymbols</code> that returns an
+                  array of only symbolic keys. Also, there exist a method
+                  <code>Reflect.ownKeys(obj)</code> that returns all keys.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>To transform an object, follow these steps:</p>
+                <ol>
+                  <li>
+                    Use <code>Object.entries(obj)</code> to get an array of
+                    key/value pairs from <code>obj</code>.
+                  </li>
+                  <li>
+                    Use array methods on that array, e.g. <code>map</code>, to
+                    transform these key/value pairs.
+                  </li>
+                  <li>
+                    Use <code>Object.fromEntries(array)</code> on the resulting
+                    array to turn it back into an object.
+                  </li>
+                </ol>
+                <p>See the following example:</p>
+                <CodeSnippet
+                  code={`let prices = {
+  banana: 1,
+  orange: 2,
+  meat: 4,
+};
+
+let doublePrices = Object.fromEntries(
+  // convert prices to array, map each key/value pair into another pair
+  // and then fromEntries gives back the object
+  Object.entries(prices).map(entry => [entry[0], entry[1] * 2])
+);
+
+console.log(doublePrices.meat); // 8`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
         chapterTitle: "Destructuring assignment",
         tips: [
           {
