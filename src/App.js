@@ -85,7 +85,7 @@ function App() {
                     color="primary"
                     style={{
                       position: "absolute",
-                      top: "3px",
+                      top: "0px",
                       right: "0px",
                       color: "var(--secondaryColor)",
                       cursor: "pointer",
