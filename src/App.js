@@ -11,6 +11,7 @@ import randomJsTips from "./randomJsTips";
 import tips from "./jsinfo/tips";
 
 import { useState } from "react";
+import BackToTop from "./components/BackToTop";
 
 function App() {
   const [hiddenSections, setHiddenSection] = useState([]);
@@ -51,7 +52,6 @@ function App() {
     <div className="App py-5 my-5">
       <div className="container">
         <Heading type="h1" text={"JavaScript quick summary | by Ritwal"} />
-
         <div className="wrapper mb-5">
           <p>Quick tips that cover a wide range of JavaScript concepts.</p>
           <p>
@@ -72,7 +72,6 @@ function App() {
             .
           </p>
         </div>
-
         <div className="wrapper jsInfoTips-wrapper mb-5 pb-5">
           <div className="wrapper position-relative">
             <Heading type="h2" text="Javascript.info book tips:" />
@@ -183,7 +182,6 @@ function App() {
             );
           })} */}
         </div>
-
         <div className="wrapper randomJsTips-wrapper mb-5 pb-5">
           <Heading type="h2" text="Other random tips and questions" />
 
@@ -196,6 +194,8 @@ function App() {
             );
           })}
         </div>
+
+        <BackToTop />
       </div>
     </div>
   );
