@@ -41,11 +41,7 @@ function App() {
   //
   //
   //
-  let company = [1, 2, 3];
 
-  const hi = company.values();
-
-  console.log(hi);
   //
   //
   //
