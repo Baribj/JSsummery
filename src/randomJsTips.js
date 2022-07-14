@@ -1,6 +1,8 @@
 /* import CodeSnippet from "./components/CodeSnippet";
 import snippets from "./snippets"; */
 
+import CodeSnippet from "./components/CodeSnippet";
+
 const randomJsTips = [
   {
     content: (
@@ -63,6 +65,94 @@ const randomJsTips = [
           iterator by default. Gotta dig deeper and get a grip on what does that
           even mean.
         </p>
+      </>
+    ),
+    seeMore: [""],
+  },
+  {
+    content: (
+      <>
+        <p>As I see it, there are two reason to pass a wrapper function:</p>
+        <p>
+          1- To pass code that will be run later (callbacks). The wrapper
+          function will be called later and it will execute the code. Consider
+          the following:
+        </p>
+        <CodeSnippet
+          code={`let arr = users.filter(ourFunction())
+// Here, ourFunction will run as soon as JS engin reaches it.
+// Thats not what we want, we want to pass a function that .filter can call on every iteration.
+// Same goes to onClick={} and a lot of other methods, hooks (useEffect return) ... etc
+        
+// So either use:
+let arr = users.filter(ourFunction)
+        
+// Or, better yet, a wrapper function:
+let arr = users.filter(()=> {
+  return ourFunction(); // here, .filter expect a return, but onClick={} for example doesn't, so "return" don't always have to be there.
+})
+// Now, .filter will call the wrapper function on every rotation, which will then execute outFunction() or really any other code`}
+        />
+        <p>2- To have the value of "this" defined. Consider the following:</p>
+        <CodeSnippet
+          code={`let soldiers = users.filter(army.canJoin, army);
+// "this" inside canJoin will loose binding, because its called as stand alone function.
+// Thats why we need to pass the second argument in .filter
+
+// A better way (with wrapper function):
+let soldiers = users.filter((user) => {
+   return army.canJoin(user);   
+});`}
+        />
+        <p>
+          There could be other situations where the use of wrapper functions is
+          necessary/recommended, will add them here once discovered.
+        </p>
+      </>
+    ),
+    seeMore: [""],
+  },
+  {
+    content: (
+      <>
+        <p>
+          So, the context of "this" is lost in a couple of scenarios, here are
+          they:
+        </p>
+        <p>1- When passing methods as callbacks:</p>
+        <CodeSnippet
+          code={`let soldiers = users.filter(army.canJoin) // context of "this" is lost resulting in an error.
+        
+// can be fixed by:
+let soldiers = users.filter(army.canJoin, army)
+        
+// or
+let soldiers = users.filter(() => {
+  army.canJoin();
+})`}
+        />
+        <p>2- When they are assigned to variable:</p>
+        <CodeSnippet
+          code={`let func = army.canJoin;
+func() // error
+
+// can be fixed with:
+func.call(army)
+
+// Note however, that:
+army.canJoin = func();
+army.canJoin() // works, won't lose binding .. see decorators chapter for more
+`}
+        />
+        <p>Both examples above are really the same:</p>
+        <CodeSnippet
+          code={`// consider the following:
+setTimeout(user.sayHi;, 1000);
+
+// what's basically happening is:
+let f = user.sayHi;
+setTimeout(f, 1000); // lost user context`}
+        />
       </>
     ),
     seeMore: [""],
