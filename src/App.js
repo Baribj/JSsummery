@@ -42,11 +42,7 @@ function App() {
   //
   //
   //
-  let obj = {
-    name: "John",
-  };
 
-  console.log(Object.getOwnPropertyDescriptor(obj, "name"));
   //
   //
 
