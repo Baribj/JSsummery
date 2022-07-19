@@ -37,6 +37,9 @@ li code {
 blockquote {
   padding-left: 20px;
   border-left: 4px solid var(--secondaryColor);
+  margin-bottom: var(
+    --bottomMargin
+  ) !important; /* using !important doesn't make sense here, but it only works when I do use it, don't have time to dig now */
 }
 
 .container {
