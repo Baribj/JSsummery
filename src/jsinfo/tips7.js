@@ -921,6 +921,177 @@ function loadCached(url) {
           },
         ],
       },
+      {
+        chapterTitle: "",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Promisification converts a function that accepts a callback
+                  into a function that returns a promise.
+                </p>
+                <p>Let's convert the example from the callback chapter:</p>
+                <CodeSnippet
+                  code={`function loadScript(src, callback) {
+  let script = document.createElement('script');
+  script.src = src;
+
+  script.onload = () => callback(null, script);
+  script.onerror = () => callback(new Error('Script load error'));
+
+  document.head.append(script);
+}
+
+// usage:
+// loadScript('path/script.js', (err, script) => {...})
+
+// Lets make it return a promise instead
+let loadScriptPromise = function(src) {
+  return new Promise((resolve, reject) => {
+    loadScript(src, (err, script) => {
+      if (err) reject(err);
+      else resolve(script);
+    });
+  });
+};
+
+// usage:
+// loadScriptPromise('path/script.js').then(...)`}
+                />
+                <p>
+                  In practice we may need to promisify more than one function,
+                  so it makes sense to use a helper:
+                </p>
+                <CodeSnippet
+                  code={`function promisify(f) {
+  return function (...args) { // return a wrapper-function (*)
+    return new Promise((resolve, reject) => {
+      function callback(err, result) { // our custom callback for f (**)
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+
+      args.push(callback); // append our custom callback to the end of f arguments
+
+      f.call(this, ...args); // call the original function
+    });
+  };
+}
+
+// usage:
+// let loadScriptPromise = promisify(loadScript);
+// loadScriptPromise(...).then(...);`}
+                />
+                <p>
+                  Here, <code>promisify</code> assumes that the original
+                  function expects a callback with exactly two arguments (
+                  <code>err</code>, <code>result</code>). That's what we
+                  encounter most often. Then our custom callback is in exactly
+                  the right format, and <code>promisify</code> works great for
+                  such a case.
+                </p>
+                <p>
+                  But what if the original <code>f</code> expects a callback
+                  with more arguments{" "}
+                  <code>callback(err, res1, res2, ...)</code> ?
+                </p>
+                <p>Let's make a more advanced version of promisify.</p>
+                <ul>
+                  <li>
+                    When called as <code>promisify(f)</code> it should work
+                    similar to the version above.
+                  </li>
+                  <li>
+                    When called as <code>promisify(f, true)</code>, it should
+                    return the promise that resolves with the array of callback
+                    results. That's exactly for callbacks with many arguments.
+                  </li>
+                </ul>
+                <CodeSnippet
+                  code={`// promisify(f, true) to get array of results
+function promisify(f, manyArgs = false) {
+  return function (...args) {
+    return new Promise((resolve, reject) => {
+      function callback(err, ...results) { // our custom callback for f
+        if (err) {
+          reject(err);
+        } else {
+          // resolve with all callback results if manyArgs is specified
+          resolve(manyArgs ? results : results[0]);
+        }
+      }
+
+      args.push(callback);
+
+      f.call(this, ...args);
+    });
+  };
+}
+
+// usage:
+// f = promisify(f, true);
+// f(...).then(arrayOfResults => ..., err => ...);`}
+                />
+                <p>
+                  Promises are not a total replacement for callbacks. Remember,
+                  a promise may have only one result, but a callback may
+                  technically be called many times.
+                </p>
+                <p>
+                  So promisification is only meant for functions that call the
+                  callback once. Further calls will be ignored.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Microtasks",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Promise handlers <code>.then</code> / <code>.catch</code> /{" "}
+                  <code>.finally</code> are always asynchronous.
+                </p>
+                <CodeSnippet
+                  code={`let promise = Promise.resolve();
+
+promise.then(() => console.log("promise done!"));
+
+console.log("code finished"); // this shows first`}
+                />
+                <p>
+                  Why? because <code>.then</code> / <code>.catch</code> /{" "}
+                  <code>.finally</code> will pass through the internal "promise
+                  jobs" queue, also called "microtask queue" (V8 term) and will
+                  only start executing after the current code is finished. Kinda
+                  like <code>setTimeout</code>.
+                </p>
+                <p>
+                  An "unhandled rejection" occurs when a promise error is not
+                  handled at the end of the microtask queue.
+                </p>
+                <p>
+                  If we need to guarantee that a piece of code is executed after{" "}
+                  <code>.then</code> / <code>.catch</code> /{" "}
+                  <code>.finally</code>, we can add it into a chained{" "}
+                  <code>.then</code>
+                  call.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
     ],
   },
 ];

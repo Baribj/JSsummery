@@ -142,8 +142,30 @@ func.call(army)
 // Note however, that:
 army.canJoin = func();
 army.canJoin() // works, won't lose binding .. see decorators chapter for more
-`}
+
+
+// To clarify the last example, consider this:
+let army = {
+  name: "John",
+};
+
+function func() {
+  console.log(this); // Here, 'this' will be undefined
+  return function () {
+    console.log(this); // here 'this' will be defined (army)
+  };
+}
+
+army.canJoin = func(); // 'this' undefined
+
+army.canJoin(); // army `}
         />
+        <p>
+          Notice how <code>this</code> is defined in the returned function, but
+          not in <code>func</code> itself. Why? because{" "}
+          <code>army.canJoin</code> is now a wrapper for the returned function,
+          hence providing it with the value of <code>this</code>.
+        </p>
         <p>Both examples above are really the same:</p>
         <CodeSnippet
           code={`// consider the following:
