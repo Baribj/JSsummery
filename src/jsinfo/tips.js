@@ -7,9 +7,20 @@ import tips4 from "./tips4";
 import tips5 from "./tips5";
 import tips6 from "./tips6";
 import tips7 from "./tips7";
+import tips8 from "./tips8";
+import tips9 from "./tips9";
 
 /* const tips = [...tips1, ...tips2, ...tips3]; */ // think this is a bit slower
 
-const tips = tips1.concat(tips2, tips3, tips4, tips5, tips6, tips7);
+const tips = tips1.concat(
+  tips2,
+  tips3,
+  tips4,
+  tips5,
+  tips6,
+  tips7,
+  tips8,
+  tips9
+);
 
 export default tips;

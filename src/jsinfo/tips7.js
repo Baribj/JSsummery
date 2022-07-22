@@ -194,7 +194,7 @@ loadScript('/my/script.js', function(error, script) {
                   use <code>.catch</code>.
                 </p>
                 <CodeSnippet
-                  code={` // This
+                  code={`// This
 promise.then(null, (err)=>{
   console.log(err)
 })
@@ -922,7 +922,7 @@ function loadCached(url) {
         ],
       },
       {
-        chapterTitle: "",
+        chapterTitle: "Promisification",
         tips: [
           {
             content: (
@@ -1086,6 +1086,117 @@ console.log("code finished"); // this shows first`}
                   <code>.then</code>
                   call.
                 </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Async/await",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  The word "async" before a function means one simple thing: a
+                  function always returns a promise. Other values are wrapped in
+                  a resolved promise automatically.
+                </p>
+                <CodeSnippet
+                  code={` function f() {
+  return 1;
+}`}
+                />
+                <p>
+                  We could explicitly return a promise, which would be the same:
+                </p>
+                <CodeSnippet
+                  code={`async function f() {
+  return Promise.resolve(1);
+}
+
+f().then((result) => {
+  console.log(result)
+}); // 1`}
+                />
+                <p>Here is another example:</p>
+                <CodeSnippet
+                  code={`async function f() {
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), 1000);
+    });
+
+    let result = await promise; // wait until the promise resolves (*)
+
+    console.log(result); // "done!"
+  }
+
+  f();
+`}
+                />
+                <p>
+                  <code>await</code> literally suspends the function execution
+                  until the promise settles, it then takes the value the promise
+                  resolved with, and put it the variable (<code>result</code> in
+                  this example), then resumes the function execution.
+                </p>
+                <p>
+                  <code>await</code> accepts "thenables".
+                </p>
+                <p>Handling errors:</p>
+                <CodeSnippet
+                  code={`async function f() {
+  await Promise.reject(new Error("Whoops!"));
+}
+
+// the same as:
+async function f() {
+  throw new Error("Whoops!");
+}`}
+                />
+                <p>
+                  Note the following (because it confused you at one point):
+                </p>
+                <CodeSnippet
+                  code={`async function f() {
+let result = await new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(1);
+  }, 1000);
+});
+
+console.log(result); // 1
+}
+f();
+
+
+// lets remove await
+sync function f() {
+let result = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(1);
+  }, 1000);
+});
+
+console.log(result); // promise object (understandably)
+}
+
+f();
+`}
+                />
+                <p>
+                  To sum up: The <code>await</code> keyword before a promise
+                  makes JavaScript wait until that promise settles, and then:
+                </p>
+                <ul>
+                  <li>
+                    If it's an error, an exception is generated — same as if
+                    throw error were called at that very place. It can be caught
+                    with <code>try...catch</code> or <code>.catch</code>.
+                  </li>
+                  <li>Otherwise, it returns the result.</li>
+                </ul>
               </>
             ),
             seeMore: [""],

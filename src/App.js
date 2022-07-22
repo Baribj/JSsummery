@@ -43,7 +43,6 @@ function App() {
   //
   //
 
-  // f(...).then(arrayOfResults => ..., err => ...);
   //
   //
 

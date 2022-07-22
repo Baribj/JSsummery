@@ -179,6 +179,26 @@ setTimeout(f, 1000); // lost user context`}
     ),
     seeMore: [""],
   },
+  {
+    content: (
+      <>
+        <p>
+          - <code>async</code> the script is downloaded in parallel to parsing
+          the page, and executed as soon as it is available (before parsing
+          completes).
+        </p>
+        <p>
+          - <code>defer</code> the script is downloaded in parallel to parsing
+          the page, and executed after the page has finished parsing.
+        </p>
+        <p>
+          - If neither tags is present, the script is downloaded and executed
+          immediately, blocking parsing until the script is completed.
+        </p>
+      </>
+    ),
+    seeMore: [""],
+  },
 ];
 
 export default randomJsTips;
