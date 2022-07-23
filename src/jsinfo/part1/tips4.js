@@ -1,4 +1,4 @@
-import CodeSnippet from "../components/CodeSnippet";
+import CodeSnippet from "../../components/CodeSnippet";
 
 // section 7 and 8
 const tips4 = [

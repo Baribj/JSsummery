@@ -8,7 +8,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 import randomJsTips from "./randomJsTips";
 
-import tips from "./jsinfo/tips";
+import tips from "./jsinfo/part1/tips";
 
 import { useState } from "react";
 import BackToTop from "./components/BackToTop";
@@ -72,8 +72,11 @@ function App() {
           </p>
         </div>
         <div className="wrapper jsInfoTips-wrapper mb-5 pb-5">
-          <div className="wrapper position-relative">
-            <Heading type="h2" text="Javascript.info book tips:" />
+          <div className="wrapper position-relative pe-4">
+            <Heading
+              type="h2"
+              text="Javascript.info book | Part 1 | The JavaScript language"
+            />
             <ArrowRightIcon
               fontSize="large"
               color="primary"

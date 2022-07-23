@@ -1,4 +1,4 @@
-import CodeSnippet from "../components/CodeSnippet";
+import CodeSnippet from "../../components/CodeSnippet";
 
 // Sections 1 - 4
 
