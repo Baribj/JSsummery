@@ -1,4 +1,4 @@
-/* import CodeSnippet from "../components/CodeSnippet"; */
+/* import CodeSnippet from "../../CodeSnippet"; */
 
 // section 14: Miscellaneous
 const tips10 = [

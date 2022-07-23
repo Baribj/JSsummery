@@ -13,7 +13,7 @@ import tips10 from "./tips10";
 
 /* const tips = [...tips1, ...tips2, ...tips3]; */ // think this is a bit slower
 
-const tips = tips1.concat(
+const all = tips1.concat(
   tips2,
   tips3,
   tips4,
@@ -25,4 +25,4 @@ const tips = tips1.concat(
   tips10
 );
 
-export default tips;
+export default all;
