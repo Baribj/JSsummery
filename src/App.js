@@ -10,6 +10,9 @@ import BackToTop from "./components/BackToTop";
 
 function App() {
   //
+
+  // the counter is now 3
+  //
   return (
     <div className="App py-5 my-5">
       <div className="container">
