@@ -45,3 +45,9 @@ blockquote {
 .container {
   max-width: 900px;
 }
+
+img {
+  margin-bottom: var(--bottomMargin);
+  max-width: 100%;
+  border-radius: 5px;
+}

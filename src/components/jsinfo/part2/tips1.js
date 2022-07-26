@@ -1,5 +1,13 @@
 import CodeSnippet from "../../CodeSnippet";
 
+// images
+import offsetParent from "./images/1.9/offsetParent.png";
+import clientWidthHeight from "./images/1.9/clientWidthHeight.png";
+import clientWidthHeight1 from "./images/1.9/clientWidthHeight1.png";
+import scrollTopLeft from "./images/1.9/scrollTopLeft.png";
+import windowVsDocument from "./images/1.9/windowVsDocument.png";
+import getBoundingClientRect from "./images/1.9/getBoundingClientRect.png";
+
 // Section 1
 
 const tips1 = [
@@ -1373,6 +1381,691 @@ console.log( computedStyle.marginTop ); // 5px`}
                   color, because otherwise an arbitrary page could find out
                   whether the user visited a link by creating it on the page and
                   checking the styles.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Element size and scrolling",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Usually paddings are shown empty on our illustrations, but if
+                  there's a lot of text in the element and it overflows, then
+                  browsers show the "overflowing" text at{" "}
+                  <code>padding-bottom</code>, that's normal.
+                </p>
+                <p>
+                  Values of the following properties are technically numbers,
+                  but these numbers are "of pixels", so these are pixel
+                  measurements.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  - <code>offsetParent</code> the nearest ancestor that the
+                  browser uses for calculating coordinates during rendering.
+                </p>
+                <p>That's the nearest ancestor that is one of the following:</p>
+                <ol>
+                  <li>
+                    CSS-positioned (position is <code>absolute</code>,{" "}
+                    <code>relative</code>, <code>fixed</code> or{" "}
+                    <code>sticky</code>), or
+                  </li>
+                  <li>
+                    <code>{"<td>"}</code>, <code>{"<th>"}</code>, or{" "}
+                    <code>{"<table>"}</code>, or
+                  </li>
+                  <li>
+                    <code>{"<body>"}</code>
+                  </li>
+                </ol>
+                <p>
+                  Properties <code>offsetLeft</code> / <code>offsetTop</code>{" "}
+                  provide x/y coordinates relative to <code>offsetParent</code>{" "}
+                  upper-left corner.
+                </p>
+                <CodeSnippet
+                  code={`<!doctype html>
+
+<main style="position: relative" id="main">
+  <article>
+    <div id="example" style="position: absolute; left: 180px; top: 180px">...</div>
+  </article>
+</main>
+<script>
+  alert(example.offsetParent.id); // main
+  alert(example.offsetLeft); // 180 (note: a number, not a string "180px")
+  alert(example.offsetTop); // 180
+</script>`}
+                />
+                <img src={offsetParent} alt="" />
+                <p>
+                  <code>offsetParent</code> will be <code>null</code> for hidden
+                  elements <code>display: none</code>, for <code>body</code> and{" "}
+                  <code>html</code> elements, and for elements with{" "}
+                  <code>position:fixed</code>.
+                </p>
+                <p>
+                  <code>offsetParent</code>, <code>offsetLeft</code>, and{" "}
+                  <code>offsetTop</code> are rarely used in practice.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Properties <code>offsetWidth</code> and{" "}
+                  <code>offsetHeight</code> provide the outer width/height.
+                  Including scrollbar and borders.
+                </p>
+                <p>
+                  Please note that geometry properties are <code>zero</code> /{" "}
+                  <code>null</code> for elements that are not displayed. So we
+                  can use this to check if the element is displayed or not:
+                </p>
+                <CodeSnippet
+                  code={`function isHidden(elem) {
+  return !elem.offsetWidth && !elem.offsetHeight;
+}`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Inside the element we have the borders. To measure them, there
+                  are properties <code>clientTop</code> and{" "}
+                  <code>clientLeft</code>.
+                </p>
+                <img src={clientWidthHeight} alt="" />
+                <p>
+                  But to be precise - these properties are not border
+                  width/height, but rather relative coordinates of the inner
+                  side from the outer side. Whats the difference?
+                </p>
+                <p>
+                  It becomes visible when the document is right-to-left (the
+                  operating system is in Arabic). The scrollbar is then not on
+                  the right, but on the left, and then <code>clientLeft</code>{" "}
+                  also includes the scrollbar width.
+                </p>
+                <p>
+                  In that case, <code>clientLeft</code> would be not{" "}
+                  <code>25</code>, but with the scrollbar{" "}
+                  <code>width 25 + 16 = 41</code>.
+                </p>
+                <img src={clientWidthHeight1} alt="" />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Properties <code>clientWidth</code> and{" "}
+                  <code>clientHeight</code> include the content width/height
+                  together with paddings, but without the scrollbar and borders.
+                </p>
+                <p>
+                  If there are no paddings, then <code>clientWidth/Height</code>{" "}
+                  is exactly the content area, inside the borders and the
+                  scrollbar (if any).
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Properties <code>scrollWidth</code> and{" "}
+                  <code>scrollHeight</code> are like{" "}
+                  <code>clientWidth/clientHeight</code> but they also include
+                  the scrolled out (hidden) parts.
+                </p>
+                <p>
+                  We can use these properties to expand the element wide to its
+                  full width/height:
+                </p>
+                <CodeSnippet
+                  code={`// expand the element to the full content height
+element.style.height = element.scrollHeight + 'px';`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Properties <code>scrollLeft</code> / <code>scrollTop</code>{" "}
+                  are the width/height of the hidden, scrolled out part of the
+                  element.
+                </p>
+                <p>
+                  In other words, <code>scrollTop</code> is "how much is
+                  scrolled up".
+                </p>
+                <img src={scrollTopLeft} alt="" />
+                <p>
+                  Most of the geometry properties here are read-only, but
+                  <code>scrollLeft/scrollTop</code> can be changed, and the
+                  browser will scroll the element.
+                </p>
+                <p>
+                  We can do something like <code>elem.scrollTop += 10</code> to
+                  scroll down <code>10px</code>.
+                </p>
+                <p>
+                  Setting <code>scrollTop</code> to <code>0</code> or a big
+                  value, such as <code>1e9</code> will make the element scroll
+                  to the very top/bottom respectively.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Don't take width/height from CSS (with{" "}
+                  <code>getComputedStyle</code>). Use geometry properties
+                  described above instead.
+                </p>
+                <p>Why? a couple of reasons:</p>
+                <ol>
+                  <li>
+                    First, CSS <code>width/height</code> depend on another
+                    property: <code>box-sizing</code> that defines "what is" CSS
+                    width and height. A change in <code>box-sizing</code> for
+                    CSS purposes may break such JavaScript.
+                  </li>
+                  <li>
+                    Second, CSS <code>width/height</code> may be{" "}
+                    <code>auto</code>. So using <code>getComputedStyle</code>{" "}
+                    will return <code>"auto"</code> which is kinda useless.
+                  </li>
+                  <li>
+                    Scrollbar. Sometimes the code that works fine without a
+                    scrollbar becomes buggy with it, because a scrollbar takes
+                    the space from the content in some browsers. So the real
+                    width available for the content is less than CSS width. And{" "}
+                    <code>clientWidth/clientHeight</code> take that into
+                    account.
+                  </li>
+                </ol>
+                <p>
+                  …But with <code>getComputedStyle(elem).width</code> the
+                  situation is different. Some browsers (e.g. Chrome) return the
+                  real inner width, minus the scrollbar, and some of them (e.g.
+                  Firefox) - CSS width (ignore the scrollbar).
+                </p>
+                <p>
+                  Open the example{" "}
+                  <a href="https://javascript.info/size-and-scroll#don-t-take-width-height-from-css">
+                    here
+                  </a>{" "}
+                  with Chrome and Firefox to see and compare the difference.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Window sizes and scrolling",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  How do we find the width and height of the browser window? How
+                  do we get the full width and height of the document, including
+                  the scrolled out part? How do we scroll the page using
+                  JavaScript?
+                </p>
+                <p>For the window:</p>
+                <p>
+                  For this type of information, we can use the root document
+                  element <code>document.documentElement</code>, that
+                  corresponds to the {"<html>"} tag. But there are additional
+                  methods and peculiarities to consider.
+                </p>
+                <p>
+                  Why not use <code>window.innerWidth/innerHeight</code>?
+                  because it will give us width/height including scroll bar. We
+                  don't want that, do we now?
+                </p>
+                <CodeSnippet
+                  code={`console.log( window.innerWidth ); // full window width
+console.log( document.documentElement.clientWidth ); // window width minus the scrollbar`}
+                />
+                <p>
+                  Please note: top-level geometry properties may work a little
+                  bit differently when there's no{" "}
+                  <code>{"<!DOCTYPE HTML>"}</code> in HTML. Odd things are
+                  possible. So please make sure it's included.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>For the document:</p>
+                <p>
+                  Theoretically, as the root document element is
+                  <code>document.documentElement</code>, and it encloses all the
+                  content, we could measure the document's full size as{" "}
+                  <code>document.documentElement.scrollWidth/scrollHeight</code>
+                  .
+                </p>
+                <p>
+                  But on that element, for the whole page, these properties do
+                  not work as intended. In Chrome/Safari/Opera, if there's no
+                  scroll, then <code>documentElement.scrollHeight</code> may be
+                  even less than <code>documentElement.clientHeight</code>!
+                  Weird, right?
+                </p>
+                <p>
+                  To reliably obtain the full document height, we should take
+                  the maximum of these properties:
+                </p>
+                <CodeSnippet
+                  code={`let scrollHeight = Math.max(
+  document.body.scrollHeight, document.documentElement.scrollHeight,
+  document.body.offsetHeight, document.documentElement.offsetHeight,
+  document.body.clientHeight, document.documentElement.clientHeight
+);
+
+console.log('Full document height, with scrolled out part: ' + scrollHeight);`}
+                />
+                <p>
+                  Why so? Better don't ask. These inconsistencies come from
+                  ancient times, not some kind of a "smart" logic.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  DOM elements have their current scroll state in their{" "}
+                  <code>scrollLeft/scrollTop</code> properties.
+                </p>
+                <p>
+                  For document scroll,{" "}
+                  <code>document.documentElement.scrollLeft/scrollTop</code>{" "}
+                  works in most browsers, except older WebKit-based ones, like
+                  Safari (bug 5991), where we should use{" "}
+                  <code>document.body</code> instead of{" "}
+                  <code>document.documentElement</code>.
+                </p>
+                <p>
+                  Luckily, we don't have to remember these peculiarities at all,
+                  because the scroll is available in the special properties,
+                  <code>window.pageXOffset/pageYOffset</code>:
+                </p>
+                <CodeSnippet
+                  code={`console.log('Current scroll from the top: ' + window.pageYOffset);
+console.log('Current scroll from the left: ' + window.pageXOffset);`}
+                />
+                <p>Not that:</p>
+                <ul>
+                  <li>
+                    <code>window.pageXOffset</code> is an alias of{" "}
+                    <code>window.scrollX</code>.
+                  </li>
+                  <li>
+                    <code>window.pageYOffset</code> is an alias of{" "}
+                    <code>window.scrollY</code>.
+                  </li>
+                </ul>
+                <p>
+                  They are the same. For historical reasons, both of them exist.
+                </p>
+                <p>Note all of these 4 properties are read only.</p>
+                <p>
+                  Note that to scroll the page, its DOM must have been fully
+                  built. If you try to scroll in <code>{"<head>"}</code> it
+                  won't work.
+                </p>
+                <p>
+                  Regular elements can be scrolled by changing
+                  scrollTop/scrollLeft.
+                </p>
+                <p>
+                  We can do the same for the page using{" "}
+                  <code>document.documentElement.scrollTop/scrollLeft</code>{" "}
+                  (except Safari, where{" "}
+                  <code>document.body.scrollTop/Left</code> should be used
+                  instead).
+                </p>
+                <p>
+                  Alternatively, there's a simpler, universal solution: special
+                  methods <code>window.scrollBy(x,y)</code> and{" "}
+                  <code>window.scrollTo(pageX,pageY)</code>.
+                </p>
+                <p>
+                  - <code>scrollBy(x,y)</code> scrolls a page relative to its
+                  current scroll position.
+                </p>
+                <p>
+                  - <code>scrollTo(pageX,pageY)</code> scrolls a page to
+                  absolute coordinates, so that the top-left corner of the
+                  visible part has coordinates <code>(pageX, pageY)</code>{" "}
+                  relative to the document's top-left corner. It's like setting{" "}
+                  <code>scrollLeft/scrollTop</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>For completeness, let's talk about other methods:</p>
+                <p>
+                  - <code>elem.scrollIntoView(top)</code> scrolls the page to
+                  make elem visible. If <code>top=true</code> then the top of
+                  the element will be aligned to the top of the screen after
+                  scrolling, if <code>top=false</code>, then its aligned in the
+                  bottom instead.
+                </p>
+                <p>
+                  We can use{" "}
+                  <code>document.body.style.overflow = "hidden"</code> to
+                  prevent scrolling of document.
+                </p>
+                <p>
+                  The drawback of the method is that the scrollbar disappears.
+                  If it occupied some space, then that space is now free and the
+                  content "jumps" to fill it.
+                </p>
+                <p>
+                  That looks a bit odd, but can be worked around if we compare{" "}
+                  <code>clientWidth</code> before and after the freeze. If it
+                  increased (the scrollbar disappeared), then add padding to{" "}
+                  <code>document.body</code> in place of the scrollbar to keep
+                  the content width the same.
+                </p>
+                <p>
+                  ** If memory serves me correctly, I think there is another
+                  solution where we can keep the scrollbar with CSS even with{" "}
+                  <code>overflow: hidden</code>.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
+      {
+        chapterTitle: "Coordinates",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Most JavaScript methods deal with one of two coordinate
+                  systems:
+                </p>
+                <ol>
+                  <li>
+                    Relative to the window: similar to{" "}
+                    <code>position:fixed</code>, calculated from the window
+                    top/left edge.
+                    <ul>
+                      <li>
+                        We'll denote these coordinates as{" "}
+                        <code>clientX/clientY</code>, the reasoning for such
+                        name will become clear later, when we study event
+                        properties.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    Relative to the document - similar to{" "}
+                    <code>position:absolute</code> in the document root,
+                    calculated from the document top/left edge.
+                    <ul>
+                      <li>
+                        We'll denote them <code>pageX/pageY</code>.
+                      </li>
+                    </ul>
+                  </li>
+                </ol>
+                <p>
+                  When the page is scrolled to the very beginning, so that the
+                  top/left corner of the window is exactly the document top/left
+                  corner, these coordinates equal each other. But after the
+                  document shifts, window-relative coordinates of elements
+                  change, as elements move across the window, while
+                  document-relative coordinates remain the same.
+                </p>
+                <img src={windowVsDocument} alt="" />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The method <code>elem.getBoundingClientRect()</code> returns
+                  window coordinates for a minimal rectangle that encloses{" "}
+                  <code>elem</code> as an object of built-in DOMRect class.
+                </p>
+                <p>Main DOMRect properties:</p>
+                <ul>
+                  <li>
+                    <code>x/y</code> X/Y-coordinates of the rectangle origin
+                    relative to window,
+                  </li>
+                  <li>
+                    <code>width/height</code> width/height of the rectangle (can
+                    be negative).
+                  </li>
+                </ul>
+                <p>Additionally, there are derived properties:</p>
+                <ul>
+                  <li>
+                    <code>top/bottom</code> Y-coordinate for the top/bottom
+                    rectangle edge,
+                  </li>
+                  <li>
+                    <code>left/right</code> X-coordinate for the left/right
+                    rectangle edge.
+                  </li>
+                </ul>
+                <img src={getBoundingClientRect} alt="" />
+                <p>
+                  As you can see, <code>x/y</code> and <code>width/height</code>{" "}
+                  fully describe the rectangle. Derived properties can be easily
+                  calculated from them:
+                </p>
+                <ul>
+                  <li>
+                    <code>left = x</code>.
+                  </li>
+                  <li>
+                    <code>top = y</code>.
+                  </li>
+                  <li>
+                    <code>right = x + width</code>.
+                  </li>
+                  <li>
+                    <code>bottom = y + height</code>.
+                  </li>
+                </ul>
+                <p>
+                  Why derived properties are needed? Why does{" "}
+                  <code>top/left</code> exist if there's <code>x/y</code>?
+                </p>
+                <p>
+                  Negative <code>width/height</code> values mean that the
+                  rectangle starts at its bottom-right corner and then "grows"
+                  left-upwards.
+                </p>
+                <p>
+                  In practice though, <code>elem.getBoundingClientRect()</code>{" "}
+                  always returns positive width/height, here we mention negative
+                  width/height only for you to understand why these seemingly
+                  duplicate properties are not actually duplicates.
+                </p>
+                <p>
+                  Internet Explorer has no support for <code>x/y</code>. We can
+                  use <code>top/left</code> instead, as they are always the same
+                  as <code>x/y</code> for positive <code>width/height</code>, in
+                  particular in the result of{" "}
+                  <code>elem.getBoundingClientRect()</code>.
+                </p>
+                <p>
+                  There are obvious similarities between window-relative
+                  coordinates and CSS <code>position:fixed</code>.
+                </p>
+                <p>
+                  However, in CSS position <code>right</code> is the distance
+                  from the right edge and <code>bottom</code> is the distance
+                  from the bottom edge.
+                </p>
+                <p>
+                  In JS tho, as we can see in the image above, all window
+                  coordinates are counted from the top-left corner.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The call to <code>document.elementFromPoint(x, y)</code>{" "}
+                  returns the most nested element at window coordinates{" "}
+                  <code>(x, y)</code>. The syntax is:
+                </p>
+                <CodeSnippet
+                  code={`let elem = document.elementFromPoint(x, y);`}
+                />
+                <p>
+                  For example, the code below highlights and logs the element
+                  that is now in the middle of the window:
+                </p>
+                <CodeSnippet
+                  code={`let centerX = document.documentElement.clientWidth / 2;
+let centerY = document.documentElement.clientHeight / 2;
+
+let elem = document.elementFromPoint(centerX, centerY);
+
+elem.style.background = "red";
+console.log(elem.tagName);`}
+                />
+                <p>
+                  For out-of-window coordinates the{" "}
+                  <code>elementFromPoint</code> returns <code>null</code>.
+                </p>
+                <p>
+                  Here is a typical error that might occur if we don't check for
+                  it:
+                </p>
+                <CodeSnippet
+                  code={`let elem = document.elementFromPoint(x, y);
+// if the coordinates happen to be out of the window, then elem = null
+elem.style.background = ''; // Error!`}
+                />
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  There's no standard method to get the document coordinates of
+                  an element. But it's easy to write it.
+                </p>
+                <ul>
+                  <li>
+                    <code>pageY</code> = <code>clientY</code> + height of the
+                    scrolled-out vertical part of the document.
+                  </li>
+                  <li>
+                    <code>pageX</code> = <code>clientX</code> + width of the
+                    scrolled-out horizontal part of the document.
+                  </li>
+                </ul>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>To sum up, Any point on the page has coordinates:</p>
+                <ol>
+                  <li>
+                    Relative to the window -{" "}
+                    <code>elem.getBoundingClientRect()</code>.
+                  </li>
+                  <li>
+                    Relative to the document -{" "}
+                    <code>elem.getBoundingClientRect()</code> plus the current
+                    page scroll.
+                  </li>
+                </ol>
+                <p>
+                  Window coordinates are great to use with{" "}
+                  <code>position:fixed</code>, and document coordinates do well
+                  with <code>position:absolute</code>.
+                </p>
+                <p>
+                  ** Basically you will end up using{" "}
+                  <code>element.style.top = value + "px"</code>, If that{" "}
+                  <code>elem</code> has <code>position:fixed</code>, you better
+                  get the <code>value</code> from{" "}
+                  <code>elem.getBoundingClientRect().top</code>. Otherwise, if{" "}
+                  <code>elem</code> has <code>position: absolute</code>, you
+                  better get the value from{" "}
+                  <code>elem.getBoundingClientRect()</code> plus current page
+                  scroll. Like so:
+                </p>
+                <CodeSnippet
+                  code={`let box = elem.getBoundingClientRect();                 
+let top = box + window.pageYOffset;`}
+                />
+                <p>
+                  ** So whatever to put into{" "}
+                  <code>element.style.top = value + "px"</code>, will be
+                  calculated relative to window if it has{" "}
+                  <code>position:fixed</code> and relative to document if it has{" "}
+                  <code>position: absolute</code>.
                 </p>
               </>
             ),
