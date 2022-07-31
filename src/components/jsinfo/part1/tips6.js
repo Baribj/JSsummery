@@ -1,6 +1,6 @@
 import CodeSnippet from "../../CodeSnippet";
 
-// section 9
+// section 10
 const tips6 = [
   {
     sectionTitle: "Error handling",
@@ -249,7 +249,7 @@ console.log( func() ); // first works console.log from finally, and then this on
         ],
       },
       {
-        chapterTitle: "",
+        chapterTitle: "Custom errors, extending Error",
         tips: [
           {
             content: (
@@ -281,9 +281,11 @@ console.log( func() ); // first works console.log from finally, and then this on
           {
             content: (
               <>
-                The rest of this chapter heavily depend on classes, Skipping it
-                for now. Maybe go back to it after you have finished studying
-                the classes section?
+                <p>
+                  The rest of this chapter heavily depend on classes, Skipping
+                  it for now. Maybe go back to it after you have finished
+                  studying the classes section?
+                </p>
               </>
             ),
             seeMore: ["https://javascript.info/custom-errors#extending-error"],
