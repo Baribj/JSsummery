@@ -775,6 +775,319 @@ One more counter: <input type="button" value="2" data-counter />
           },
         ],
       },
+      {
+        chapterTitle: "Dispatching custom events",
+        tips: [
+          {
+            content: (
+              <>
+                <p>
+                  Built-in event classes form a hierarchy, similar to DOM
+                  element classes. The root is the built-in Event class.
+                </p>
+                <p>We can create Event objects like this:</p>
+                <CodeSnippet code={`let event = new Event(type[, options]);`} />
+                <p>
+                  - <code>type</code> event type, a string like{" "}
+                  <code>"click"</code> or our own like <code>"my-event"</code>.
+                </p>
+                <p>
+                  - <code>options</code> he object with two optional properties:
+                </p>
+                <ul>
+                  <li>
+                    <code>bubbles: true/false</code> if true, then the event
+                    bubbles. Default is <code>false</code>.
+                  </li>
+                  <li>
+                    <code>cancelable: true/false</code> if true, then the
+                    "default action" may be prevented (as in we can use{" "}
+                    <code>e.preventDefault()</code> with it). Later we'll see
+                    what it means for custom events. Default is{" "}
+                    <code>false</code>.
+                  </li>
+                </ul>
+                <p>
+                  After an event object is created, we should "run" it on an
+                  element using the call elem.dispatchEvent(event).
+                </p>
+                <CodeSnippet
+                  code={`let e = new Event("hello", { bubbles: true, cancelable: true });
+
+ch.addEventListener("hello", () => {
+  console.log(event.currentTarget);
+});
+
+pa.addEventListener("hello", () => {
+  console.log(event.currentTarget);
+});
+
+ch.dispatchEvent(e);`}
+                />
+                <p>
+                  We should use <code>addEventListener</code> for our custom
+                  events, because <code>{"on<event>"}</code> only exists for
+                  built-in events,
+                  <code>document.onhello</code> doesn't work.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Here's a short list of classes for UI Events from the{" "}
+                  <a href="https://www.w3.org/TR/uievents/">
+                    UI Event specification
+                  </a>
+                  :
+                </p>
+                <p>
+                  - <code>UIEvent</code>.
+                </p>
+                <p>
+                  - <code>FocusEvent</code>.
+                </p>
+                <p>
+                  - <code>MouseEvent</code>.
+                </p>
+                <p>
+                  - <code>WheelEvent</code>.
+                </p>
+                <p>
+                  - <code>KeyboardEvent</code>.
+                </p>
+                <p>- ....</p>
+                <p>
+                  We should use them instead of <code>new Event</code> if we
+                  want to create such events. For instance, new{" "}
+                  <code>MouseEvent("click")</code>.
+                </p>
+                <CodeSnippet
+                  code={`let event = new MouseEvent("click", {
+  bubbles: true,
+  cancelable: true,
+  clientX: 100,
+  clientY: 100
+});
+
+console.log(event.clientX); // 100`}
+                />
+                <p>
+                  Please note the generic event constructor doesn't allow that.
+                  Lets try:
+                </p>
+                <CodeSnippet
+                  code={`let event = new Event("click", {
+  bubbles: true, // only bubbles and cancelable
+  cancelable: true, // work in the Event constructor
+  clientX: 100,
+  clientY: 100
+});
+
+console.log(event.clientX); // undefined, the unknown property is ignored!
+`}
+                />
+                <p>
+                  Technically we can create a custom property{" "}
+                  <code>event.clientX = 100</code> after creating the event.
+                  However, it is best to stick to convention.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  For our own, completely new events types like{" "}
+                  <code>"hello"</code> we should use{" "}
+                  <code>new CustomEvent</code>. Technically{" "}
+                  <code>CustomEvent</code> is the same as <code>Event</code>,
+                  with one exception.
+                </p>
+                <p>
+                  In the second argument (object) we can add an additional
+                  property <code>detail</code> for any custom information that
+                  we want to pass with the event.
+                </p>
+                <CodeSnippet
+                  code={`//additional details come with the event to the handler
+elem.addEventListener("hello", function(event) {
+  alert(event.detail.name);
+});
+
+elem.dispatchEvent(new CustomEvent("hello", {
+  detail: { name: "John" }
+}));`}
+                />
+                <p>
+                  The <code>detail</code> property can have any data.
+                  Technically we could live without, because we can assign any
+                  properties into a regular <code>new Event</code> object after
+                  its creation. But <code>CustomEvent</code> provides the
+                  special <code>detail</code> field for it to evade conflicts
+                  with other event properties.
+                </p>
+                <p>
+                  Besides, the event class describes "what kind of event" it is,
+                  and if the event is custom, then we should use{" "}
+                  <code>CustomEvent</code> just to be clear about what it is.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  The call to <code>elem.dispatchEvent(event)</code> returns{" "}
+                  <code>false</code> if <code>event.preventDefault()</code> was
+                  called in the event handler.
+                </p>
+                <CodeSnippet
+                  code={`<!doctype html>
+                
+<pre id="rabbit">
+  |\   /|
+   \|_|/
+   /. .\
+  =\_Y_/=
+   {>o<}
+</pre>
+<button onclick="hide()">Hide()</button>
+
+<script>
+  function hide() {
+    let event = new CustomEvent("hide", {
+      cancelable: true // without that flag preventDefault doesn't work
+    });
+    if (!rabbit.dispatchEvent(event)) {
+      alert('The action was prevented by a handler');
+    } else {
+      rabbit.hidden = true;
+    }
+  }
+
+  rabbit.addEventListener('hide', function(event) {
+    if (confirm("Call preventDefault?")) {
+      event.preventDefault();
+    }
+  });
+</script>`}
+                />
+                <p>
+                  Please note: the event must have the flag{" "}
+                  <code>cancelable: true</code>, otherwise the call{" "}
+                  <code>event.preventDefault()</code> is ignored.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>
+                  Usually events are processed in a queue. That is: if the
+                  browser is processing <code>onclick</code> and a new event
+                  occurs, e.g. mouse moved, then its handling is queued up,
+                  corresponding <code>mousemove</code> handlers will be called
+                  after <code>onclick</code> processing is finished.
+                </p>
+                <p>
+                  The notable exception is when one event is initiated from
+                  within another one, e.g. using <code>dispatchEvent</code>.
+                  Such events are processed immediately: the new event handlers
+                  are called, and then the current event handling is resumed.
+                </p>
+                <CodeSnippet
+                  code={`<!doctype html>
+                
+<button id="menu">Menu (click me)</button>
+
+<script>
+  menu.onclick = function() {
+    console.log(1);
+
+    menu.dispatchEvent(new CustomEvent("menu-open", {
+      bubbles: true
+    }));
+
+    console.log(2);
+  };
+
+  // triggers between 1 and 2
+  document.addEventListener('menu-open', () => console.log('nested'));
+
+
+  // order will be 1, nested, 2.
+  // we used "bubbles: true: here because we are dispatching on menu, not document.
+</script>`}
+                />
+                <p>
+                  So what if we want <code>onclick</code> to be fully processed
+                  before moving to other events?
+                </p>
+                <p>
+                  Then we can either move <code>dispatchEvent</code> to the
+                  bottom of the <code>onclick</code> handler, or even better,
+                  wrap it in a zero delay <code>setTimeout()</code>.
+                </p>
+                <CodeSnippet
+                  code={`<!doctype html>
+                
+<button id="menu">Menu (click me)</button>
+
+<script>
+  menu.onclick = function() {
+    console.log(1);
+
+    setTimeout(() => menu.dispatchEvent(new CustomEvent("menu-open", {
+      bubbles: true
+    })));
+
+    console.log(2);
+  };
+
+  document.addEventListener('menu-open', () => console.log('nested'));
+
+  order will be 1, 2, nested
+</script>`}
+                />
+                <p>
+                  Now <code>dispatchEvent</code> runs asynchronously after the
+                  current code execution is finished, including{" "}
+                  <code>menu.onclick</code>, so event handlers are totally
+                  separate.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+          {
+            content: (
+              <>
+                <p>To sum up:</p>
+                <p>
+                  To generate an event from code (programmatically), we first
+                  need to create an event object.
+                </p>
+                <p>
+                  Despite the technical possibility of generating browser events
+                  like <code>click</code> or <code>keydown</code>, they should
+                  be avoided.
+                </p>
+              </>
+            ),
+            seeMore: [""],
+          },
+        ],
+      },
     ],
   },
 ];

@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App py-5 my-5">
       <div className="container">
-        <Heading type="h1" text={"JavaScript quick summary | by Ritwal"} />
+        <Heading type="h1" text={"JavaScript quick summary"} />
         <div className="wrapper mb-5">
           <p>Quick tips that cover a wide range of JavaScript concepts.</p>
           <p>
